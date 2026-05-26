@@ -679,27 +679,64 @@ const ROTATIONS = {
   ]}
 };
 
+// ── API config ────────────────────────────────────────────────────────────────
+const API_URL = 'https://fellowship-companion-api-ezeitler.apps.cloudapps.unc.edu';
+
+// ── Runtime rotation store (populated from API or fallback) ───────────────────
+let ROTATION_DATA = {};  // keyed by rotation id
+
 const iconColor = { red: 'var(--danger)', blue: 'var(--info)', green: 'var(--success)' };
-const itemIcon  = { 'alert-red': 'ti-alert-circle', 'alert-blue': 'ti-info-circle', 'alert-green': 'ti-external-link' };
 let openCards = {};
 
+// Convert API response item to the cls the renderer expects
+function itemCls(color) {
+  return color === 'red' ? 'alert-red' : color === 'green' ? 'alert-green' : 'alert-blue';
+}
+function itemIcon(color) {
+  return color === 'red' ? 'ti-alert-circle' : color === 'green' ? 'ti-external-link' : 'ti-info-circle';
+}
+
+// Normalise a rotation object — works whether it came from the API or the
+// hardcoded ROTATIONS fallback (which uses a slightly different shape).
+function normaliseRotation(rot) {
+  // API shape: { id, label, cards: [{ title, icon, color, items: [{text, link}] }] }
+  // Fallback shape: same but items have a `cls` field instead of being derived from color
+  return {
+    id:    rot.id,
+    label: rot.label,
+    cards: (rot.cards || []).map(card => ({
+      title: card.title,
+      icon:  card.icon  || 'ti-clipboard-list',
+      color: card.color || 'blue',
+      items: (card.items || []).map(item => ({
+        text: item.text,
+        link: item.link || null,
+        cls:  item.cls || itemCls(card.color || 'blue'),
+      }))
+    }))
+  };
+}
+
 function renderRotation(key) {
-  const rot = ROTATIONS[key]; if (!rot) return;
+  const rot = ROTATION_DATA[key]; if (!rot) return;
   document.getElementById('rotMain').innerHTML = rot.cards.map((card, i) => {
     const k = key + '-' + i;
     const open = openCards[k] !== false;
+    const ic = iconColor[card.color] || 'var(--info)';
     return `<div class="info-card">
       <div class="info-card-header" onclick="toggleCard('${k}')">
         <div class="info-card-label">
-          <i class="ti ${card.icon}" style="color:${iconColor[card.color]}"></i>
+          <i class="ti ${card.icon}" style="color:${ic}"></i>
           <span>${card.title}</span>
         </div>
         <i class="ti ti-chevron-up chevron ${open ? 'open' : ''}" id="chev-${k}"></i>
       </div>
       <div class="info-card-body ${open ? '' : 'collapsed'}" id="card-${k}">
         ${card.items.map(item => `<div class="alert-item ${item.cls}">
-          <i class="ti ${itemIcon[item.cls]}"></i>
-          <span>${item.link && item.link !== '#' ? `<a href="${item.link}" target="_blank">${item.text}</a>` : item.text}</span>
+          <i class="ti ${itemIcon(card.color)}"></i>
+          <span>${item.link && item.link !== '#'
+            ? `<a href="${item.link}" target="_blank">${item.text}</a>`
+            : item.text}</span>
         </div>`).join('')}
       </div>
     </div>`;
@@ -713,13 +750,43 @@ function toggleCard(k) {
   chev.classList.toggle('open', openCards[k] !== false);
 }
 
-document.getElementById('rotSidebar').addEventListener('click', e => {
-  const btn = e.target.closest('.rot-sidebar-btn'); if (!btn) return;
-  document.querySelectorAll('.rot-sidebar-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderRotation(btn.dataset.rot);
-});
-renderRotation('icu');
+// Show a subtle banner when running in offline/fallback mode
+function showFallbackBanner() {
+  const banner = document.createElement('div');
+  banner.style.cssText = 'background:#fef3c7;border-bottom:1px solid #fcd34d;padding:6px 24px;font-size:12px;color:#92400e;text-align:center;';
+  banner.textContent = 'Showing cached content — could not reach the content server.';
+  document.querySelector('.app-header').insertAdjacentElement('afterend', banner);
+}
+
+// Load rotations from API, fall back to hardcoded ROTATIONS if unavailable
+async function loadRotations() {
+  try {
+    const res = await fetch(`${API_URL}/rotations`, { signal: AbortSignal.timeout(5000) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    // Index by rotation id
+    data.forEach(rot => { ROTATION_DATA[rot.id] = normaliseRotation(rot); });
+    console.log(`Loaded ${data.length} rotations from API`);
+  } catch (err) {
+    console.warn('API unavailable, using hardcoded fallback:', err.message);
+    showFallbackBanner();
+    // Build ROTATION_DATA from the hardcoded ROTATIONS constant
+    Object.entries(ROTATIONS).forEach(([id, rot]) => {
+      ROTATION_DATA[id] = normaliseRotation({ id, ...rot });
+    });
+  }
+
+  // Wire sidebar and render first rotation
+  document.getElementById('rotSidebar').addEventListener('click', e => {
+    const btn = e.target.closest('.rot-sidebar-btn'); if (!btn) return;
+    document.querySelectorAll('.rot-sidebar-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderRotation(btn.dataset.rot);
+  });
+  renderRotation('icu');
+}
+
+loadRotations();
 
 document.querySelector('.calc-sidebar').addEventListener('click', e => {
   const btn = e.target.closest('.calc-sidebar-btn'); if (!btn) return;
