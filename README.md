@@ -73,4 +73,4 @@ Admin endpoints require `X-Admin-Token` header.
 ## Contact
 
 Maintained by the UNC Nephrology Fellowship Program.
-Questions: [your email or division contact]
+Questions: evan_zeitler@med.unc.edu
