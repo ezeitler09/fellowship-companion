@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNC Nephrology Fellowship</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --unc-navy: #13294B;
+    --unc-blue: #4B9CD3;
+    --unc-blue-light: #E8F4FC;
+    --bg: #f5f6f8;
+    --bg-white: #ffffff;
+    --bg-secondary: #f0f2f5;
+    --border: #e2e5ea;
+    --text: #1a1d23;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
+    --danger: #dc2626;
+    --danger-bg: #fef2f2;
+    --info: #2563eb;
+    --info-bg: #eff6ff;
+    --success: #16a34a;
+    --success-bg: #f0fdf4;
+    --purple-bg: #f3f0ff;
+    --purple: #5b21b6;
+    --radius: 10px;
+    --radius-sm: 6px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .app-header {
+    background: var(--unc-navy);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .app-header i { font-size: 28px; color: var(--unc-blue); }
+  .app-header-title { font-size: 18px; font-weight: 600; color: #fff; }
+  .app-header-sub { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 1px; }
+
+  /* ── Top Nav ── */
+  .top-nav {
+    background: var(--bg-white);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    position: sticky;
+    top: 56px;
+    z-index: 99;
+  }
+  .top-nav-btn {
+    flex: 1;
+    padding: 14px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--text-secondary);
+    border-bottom: 3px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .top-nav-btn i { font-size: 18px; }
+  .top-nav-btn:hover { color: var(--unc-blue); background: var(--unc-blue-light); }
+  .top-nav-btn.active { color: var(--unc-blue); border-bottom-color: var(--unc-blue); }
+
+  /* ── Sections ── */
+  .section { display: none; }
+  .section.active { display: flex; }
+
+  /* ── Rotation layout ── */
+  .rot-layout { width: 100%; min-height: calc(100vh - 113px); }
+  .rot-sidebar {
+    width: 180px;
+    flex-shrink: 0;
+    background: var(--bg-white);
+    border-right: 1px solid var(--border);
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    position: sticky;
+    top: 113px;
+    height: calc(100vh - 113px);
+    overflow-y: auto;
+  }
+  .rot-sidebar-btn {
+    width: 100%;
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 13px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--text-secondary);
+    border-radius: var(--radius-sm);
+    transition: background 0.12s, color 0.12s;
+    font-weight: 500;
+  }
+  .rot-sidebar-btn:hover:not(.active) { background: var(--bg-secondary); color: var(--text); }
+  .rot-sidebar-btn.active { background: var(--unc-blue); color: #fff; }
+
+  .rot-main {
+    flex: 1;
+    padding: 20px 24px;
+    max-width: 900px;
+  }
+
+  /* ── Info cards ── */
+  .info-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .info-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    cursor: pointer;
+    user-select: none;
+    gap: 10px;
+  }
+  .info-card-header:hover { background: var(--bg-secondary); }
+  .info-card-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .info-card-label i { font-size: 18px; }
+  .chevron { font-size: 16px; color: var(--text-muted); transition: transform 0.2s; }
+  .chevron.open { transform: rotate(180deg); }
+
+  .info-card-body {
+    border-top: 1px solid var(--border);
+    padding: 4px 18px 16px;
+    display: block;
+  }
+  .info-card-body.collapsed { display: none; }
+
+  .alert-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--bg-secondary);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--text);
+  }
+  .alert-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .alert-item i { font-size: 16px; margin-top: 1px; flex-shrink: 0; }
+  .alert-red i { color: var(--danger); }
+  .alert-blue i { color: var(--info); }
+  .alert-green i { color: var(--success); }
+  .alert-green a { color: var(--info); text-decoration: underline; }
+  .alert-green a:hover { color: var(--unc-navy); }
+
+  /* ── Calculators layout ── */
+  .calc-layout { width: 100%; min-height: calc(100vh - 113px); }
+  .calc-sidebar {
+    width: 160px;
+    flex-shrink: 0;
+    background: var(--bg-white);
+    border-right: 1px solid var(--border);
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    position: sticky;
+    top: 113px;
+    height: calc(100vh - 113px);
+    overflow-y: auto;
+  }
+  .calc-sidebar-btn {
+    width: 100%;
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 13px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--text-secondary);
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    transition: background 0.12s, color 0.12s;
+  }
+  .calc-sidebar-btn:hover:not(.active) { background: var(--bg-secondary); color: var(--text); }
+  .calc-sidebar-btn.active { background: var(--unc-blue); color: #fff; }
+
+  .calc-main { flex: 1; padding: 20px 24px; max-width: 900px; }
+  .calc-pane { display: none; }
+  .calc-pane.active { display: block; }
+
+  .calc-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .calc-card h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-bottom: 12px; }
+  .form-row { display: flex; flex-direction: column; gap: 5px; }
+  .form-row label { font-size: 12px; font-weight: 500; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.03em; }
+  .form-row input, .form-row select {
+    padding: 9px 11px;
+    font-size: 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-secondary);
+    color: var(--text);
+    width: 100%;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    outline: none;
+  }
+  .form-row input:focus, .form-row select:focus {
+    border-color: var(--unc-blue);
+    box-shadow: 0 0 0 3px rgba(75,156,211,0.15);
+    background: var(--bg-white);
+  }
+  .form-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+  .form-check input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--unc-blue); }
+
+  .result-box { border-radius: var(--radius-sm); padding: 14px 16px; margin-top: 14px; }
+  .result-blue { background: var(--info-bg); border: 1px solid #bfdbfe; }
+  .result-green { background: var(--success-bg); border: 1px solid #bbf7d0; }
+  .result-purple { background: var(--purple-bg); border: 1px solid #ddd6fe; }
+  .result-red { background: var(--danger-bg); border: 1px solid #fecaca; }
+  .result-row { font-size: 14px; color: var(--text); margin-bottom: 6px; }
+  .result-note { font-size: 12px; color: var(--text-secondary); margin-top: 8px; font-style: italic; border-top: 1px solid rgba(0,0,0,0.06); padding-top: 8px; }
+
+  .refs {
+    margin-top: 6px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    border-left: 3px solid var(--unc-blue);
+    background: var(--bg-white);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  /* ── Duty hours ── */
+  .duty-layout { width: 100%; padding: 24px; background: var(--bg); }
+  .duty-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 860px; }
+
+  .duty-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: var(--shadow);
+  }
+  .duty-card h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 16px; }
+
+  .clock-time-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); text-align: center; text-transform: uppercase; letter-spacing: 0.05em; }
+  .clock-display { font-size: 48px; font-weight: 300; color: var(--text); font-variant-numeric: tabular-nums; text-align: center; margin: 8px 0 4px; letter-spacing: -1px; }
+  .clock-status { font-size: 13px; color: var(--text-secondary); text-align: center; margin-bottom: 4px; }
+  .clock-sub { font-size: 12px; color: var(--unc-blue); text-align: center; margin-bottom: 18px; min-height: 20px; }
+
+  .btn-clock {
+    width: 100%;
+    padding: 13px;
+    border-radius: var(--radius);
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+    letter-spacing: 0.01em;
+  }
+  .btn-clock:active { transform: scale(0.98); }
+  .btn-in { background: #16a34a; color: #fff; }
+  .btn-in:hover { background: #15803d; }
+  .btn-out { background: #dc2626; color: #fff; }
+  .btn-out:hover { background: #b91c1c; }
+
+  .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+  .stat-card { background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 14px 12px; text-align: center; }
+  .stat-val { font-size: 24px; font-weight: 600; color: var(--text); }
+  .stat-lbl { font-size: 11px; color: var(--text-muted); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .log-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .log-header span { font-size: 15px; font-weight: 600; color: var(--text); }
+  .btn-clear { font-size: 12px; color: var(--danger); background: none; border: none; cursor: pointer; padding: 4px 8px; border-radius: var(--radius-sm); }
+  .btn-clear:hover { background: var(--danger-bg); }
+
+  .log-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .log-entry:last-child { border-bottom: none; }
+  .log-date { font-weight: 500; color: var(--text); }
+  .log-detail { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+  .log-hours { font-weight: 600; color: var(--unc-blue); font-size: 14px; }
+  .empty-log { text-align: center; font-size: 13px; color: var(--text-muted); padding: 28px 0; }
+  .log-scroll { max-height: 420px; overflow-y: auto; }
+
+  /* ── Responsive ── */
+  @media (max-width: 680px) {
+    .rot-sidebar, .calc-sidebar { width: 120px; }
+    .rot-sidebar-btn, .calc-sidebar-btn { font-size: 12px; padding: 9px 10px; }
+    .rot-main, .calc-main { padding: 14px; }
+    .top-nav-btn span { display: none; }
+    .top-nav-btn i { font-size: 22px; }
+    .clock-display { font-size: 38px; }
+    .duty-layout { padding: 14px; }
+  }
+  @media (max-width: 480px) {
+    .rot-sidebar, .calc-sidebar { width: 90px; }
+    .rot-sidebar-btn, .calc-sidebar-btn { font-size: 11px; padding: 8px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <i class="ti ti-droplet-half-2"></i>
+  <div>
+    <div class="app-header-title">UNC Nephrology Fellowship</div>
+    <div class="app-header-sub">Clinical companion</div>
+  </div>
+</div>
+
+<div class="top-nav">
+  <button class="top-nav-btn active" onclick="switchSection('rotations', this)">
+    <i class="ti ti-layout-sidebar"></i><span>Rotations</span>
+  </button>
+  <button class="top-nav-btn" onclick="switchSection('calculators', this)">
+    <i class="ti ti-calculator"></i><span>Calculators</span>
+  </button>
+  <button class="top-nav-btn" onclick="switchSection('duty', this)">
+    <i class="ti ti-clock-hour-4"></i><span>Duty hours</span>
+  </button>
+</div>
+
+<!-- ═══════════ ROTATIONS ═══════════ -->
+<div id="sec-rotations" class="section active rot-layout">
+  <div class="rot-sidebar" id="rotSidebar">
+    <button class="rot-sidebar-btn active" data-rot="icu">ICU / CRRT</button>
+    <button class="rot-sidebar-btn" data-rot="floor">Consult / Floor</button>
+    <button class="rot-sidebar-btn" data-rot="transplant">Transplant</button>
+    <button class="rot-sidebar-btn" data-rot="biopsy">Biopsy</button>
+    <button class="rot-sidebar-btn" data-rot="clinic">Outpatient</button>
+    <button class="rot-sidebar-btn" data-rot="hd">HD / PD</button>
+    <button class="rot-sidebar-btn" data-rot="home">Home therapies</button>
+  </div>
+  <div class="rot-main" id="rotMain"></div>
+</div>
+
+<!-- ═══════════ CALCULATORS ═══════════ -->
+<div id="sec-calculators" class="section calc-layout">
+  <div class="calc-sidebar">
+    <button class="calc-sidebar-btn active" data-calc="electrolytes">Electrolytes</button>
+    <button class="calc-sidebar-btn" data-calc="acidbase">Acid-base</button>
+    <button class="calc-sidebar-btn" data-calc="dialysis">Dialysis</button>
+    <button class="calc-sidebar-btn" data-calc="general">General</button>
+  </div>
+  <div class="calc-main">
+
+    <!-- Electrolytes -->
+    <div id="calc-electrolytes" class="calc-pane active">
+      <div class="calc-card">
+        <h3>Free water deficit</h3>
+        <div class="form-grid">
+          <div class="form-row"><label>Weight (kg)</label><input type="number" id="fwd-wt" placeholder="70"></div>
+          <div class="form-row"><label>Serum Na (mEq/L)</label><input type="number" id="fwd-na" placeholder="155"></div>
+          <div class="form-row"><label>Sex</label><select id="fwd-sex"><option value="male">Male</option><option value="female">Female</option></select></div>
+        </div>
+        <label class="form-check"><input type="checkbox" id="fwd-elderly"> Elderly (65+) — reduced TBW</label>
+        <div id="fwd-result"></div>
+      </div>
+      <div class="calc-card">
+        <h3>Electrolyte free water clearance</h3>
+        <div class="form-grid">
+          <div class="form-row"><label>Urine volume (L/day)</label><input type="number" id="efwc-vol" placeholder="2"></div>
+          <div class="form-row"><label>Urine Na (mEq/L)</label><input type="number" id="efwc-una" placeholder="50"></div>
+          <div class="form-row"><label>Urine K (mEq/L)</label><input type="number" id="efwc-uk" placeholder="20"></div>
+          <div class="form-row"><label>Serum Na (mEq/L)</label><input type="number" id="efwc-sna" placeholder="140"></div>
+        </div>
+        <div id="efwc-result"></div>
+      </div>
+      <div class="calc-card">
+        <h3>Osmolar free water clearance</h3>
+        <div class="form-grid">
+          <div class="form-row"><label>Urine volume (L/day)</label><input type="number" id="ofwc-vol" placeholder="2"></div>
+          <div class="form-row"><label>Urine Osm (mOsm/kg)</label><input type="number" id="ofwc-uosm" placeholder="300"></div>
+          <div class="form-row"><label>Serum Osm (mOsm/kg)</label><input type="number" id="ofwc-sosm" placeholder="290"></div>
+        </div>
+        <div id="ofwc-result"></div>
+      </div>
+    </div>
+
+    <!-- Acid-base -->
+    <div id="calc-acidbase" class="calc-pane">
+      <div class="calc-card">
+        <h3>Winter's formula</h3>
+        <div class="form-grid" style="max-width:340px">
+          <div class="form-row"><label>Serum HCO₃ (mEq/L)</label><input type="number" id="win-hco3" placeholder="12"></div>
+        </div>
+        <div id="win-result"></div>
+      </div>
+      <div class="calc-card">
+        <h3>Delta-delta gap</h3>
+        <div class="form-grid">
+          <div class="form-row"><label>Anion gap</label><input type="number" id="dd-ag" placeholder="20"></div>
+          <div class="form-row"><label>Serum HCO₃ (mEq/L)</label><input type="number" id="dd-hco3" placeholder="12"></div>
+        </div>
+        <div id="dd-result"></div>
+      </div>
+      <div class="calc-card">
+        <h3>Urine osmolar gap</h3>
+        <div class="form-grid">
+          <div class="form-row"><label>Urine Osm (mOsm/kg)</label><input type="number" id="uog-uosm" placeholder="400"></div>
+          <div class="form-row"><label>Urine Na (mEq/L)</label><input type="number" id="uog-una" placeholder="50"></div>
+          <div class="form-row"><label>Urine K (mEq/L)</label><input type="number" id="uog-uk" placeholder="20"></div>
+          <div class="form-row"><label>Urine BUN (mg/dL, optional)</label><input type="number" id="uog-bun" placeholder="0"></div>
+        </div>
+        <div id="uog-result"></div>
+      </div>
+    </div>
+
+    <!-- Dialysis -->
+    <div id="calc-dialysis" class="calc-pane">
+      <div class="calc-card">
+        <h3>CRRT hyponatremia correction</h3>
+        <div class="form-grid">
+          <div class="form-row"><label>Patient Na (mEq/L)</label><input type="number" id="crrt-pna" placeholder="112"></div>
+          <div class="form-row"><label>Target Na (mEq/L)</label><input type="number" id="crrt-tna" placeholder="115"></div>
+          <div class="form-row"><label>RF rate (mL/hr)</label><input type="number" id="crrt-rf" placeholder="1400"></div>
+          <div class="form-row"><label>Solution Na (mEq/L)</label><input type="number" id="crrt-sna" placeholder="140"></div>
+        </div>
+        <div id="crrt-result"></div>
+      </div>
+      <div class="calc-card">
+        <h3>Kidney failure risk equation (KFRE)</h3>
+        <div class="form-grid">
+          <div class="form-row"><label>Age (yr)</label><input type="number" id="kfre-age" placeholder="65"></div>
+          <div class="form-row"><label>Sex</label><select id="kfre-sex"><option value="female">Female</option><option value="male">Male</option></select></div>
+          <div class="form-row"><label>eGFR (mL/min/1.73m²)</label><input type="number" id="kfre-egfr" placeholder="30"></div>
+          <div class="form-row"><label>Urine ACR (mg/g)</label><input type="number" id="kfre-acr" placeholder="200"></div>
+          <div class="form-row"><label>Region</label><select id="kfre-region"><option value="northamerica">North America</option><option value="other">Other</option></select></div>
+        </div>
+        <div id="kfre-result"></div>
+      </div>
+      <div class="refs"><strong>References:</strong> CRRT Na correction: Teixeira JP et al., AJKD 2025. &nbsp; KFRE: Tangri N et al., JAMA 2011.</div>
+    </div>
+
+    <!-- General -->
+    <div id="calc-general" class="calc-pane">
+      <div class="calc-card">
+        <h3>PREVENT cardiovascular risk</h3>
+        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px">AHA 10-yr and 30-yr CVD risk including kidney function (eGFR + ACR)</p>
+        <div class="form-grid">
+          <div class="form-row"><label>Age (yr)</label><input type="number" id="prev-age" placeholder="55"></div>
+          <div class="form-row"><label>Sex</label><select id="prev-sex"><option value="male">Male</option><option value="female">Female</option></select></div>
+          <div class="form-row"><label>Systolic BP (mmHg)</label><input type="number" id="prev-sbp" placeholder="130"></div>
+          <div class="form-row"><label>Total cholesterol (mg/dL)</label><input type="number" id="prev-tc" placeholder="200"></div>
+          <div class="form-row"><label>HDL (mg/dL)</label><input type="number" id="prev-hdl" placeholder="50"></div>
+          <div class="form-row"><label>eGFR</label><input type="number" id="prev-egfr" placeholder="60"></div>
+          <div class="form-row"><label>Urine ACR (mg/g)</label><input type="number" id="prev-acr" placeholder="30"></div>
+        </div>
+        <label class="form-check"><input type="checkbox" id="prev-bpmeds"> On blood pressure medication</label>
+        <label class="form-check"><input type="checkbox" id="prev-statin"> On statin therapy</label>
+        <label class="form-check"><input type="checkbox" id="prev-dm"> Diabetes</label>
+        <label class="form-check"><input type="checkbox" id="prev-smoke"> Current smoker</label>
+        <div id="prev-result"></div>
+      </div>
+      <div class="refs"><strong>Reference:</strong> PREVENT: Khan SS et al., Circulation 2024.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════ DUTY HOURS ═══════════ -->
+<div id="sec-duty" class="section">
+  <div class="duty-layout">
+    <div class="duty-grid">
+      <div class="duty-card">
+        <div class="clock-time-label">Current time</div>
+        <div class="clock-display" id="liveClock">--:--:--</div>
+        <div class="clock-status" id="clockStatus">Not clocked in</div>
+        <div class="clock-sub" id="clockSub">&nbsp;</div>
+        <button class="btn-clock btn-in" id="clockBtn" onclick="toggleClock()">Clock in</button>
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-val" id="statToday">0h 0m</div><div class="stat-lbl">Today</div></div>
+          <div class="stat-card"><div class="stat-val" id="statWeek">0h 0m</div><div class="stat-lbl">This week</div></div>
+        </div>
+      </div>
+      <div class="duty-card">
+        <div class="log-header">
+          <span>Shift log</span>
+          <button class="btn-clear" onclick="clearLog()">Clear all</button>
+        </div>
+        <div class="log-scroll" id="logEntries">
+          <div class="empty-log">No shifts logged yet</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ROTATIONS = {
+  icu: { label: 'ICU / CRRT', cards: [
+    { icon: 'ti-alert-triangle', color: 'red', title: 'Critical reminders', items: [
+      { cls: 'alert-red', text: 'Max Na correction: 6–8 mEq/L/24h chronic hyponatremia; 4–6 mEq/L/24h if ODS risk' },
+      { cls: 'alert-red', text: 'Overcorrection: give D5W ± DDAVP to relower Na if overshoot occurs' },
+      { cls: 'alert-red', text: 'Citrate CRRT: monitor ionized Ca post-filter (target 1.0–1.2 mmol/L), not total Ca' },
+      { cls: 'alert-red', text: 'AKI hyperphosphatemia: optimize CRRT dose before adding phosphate binders' }
+    ]},
+    { icon: 'ti-clipboard-list', color: 'blue', title: 'Quick reference', items: [
+      { cls: 'alert-blue', text: 'CRRT dose: prescribe 25–30 mL/kg/hr to achieve delivered 20–25 mL/kg/hr' },
+      { cls: 'alert-blue', text: 'KDIGO AKI stage 1: Cr ×1.5–1.9 baseline, or +0.3 mg/dL within 48h, or UO <0.5 mL/kg/hr ×6h' },
+      { cls: 'alert-blue', text: 'RRT initiation: refractory volume overload, electrolyte disturbance, acidosis, or uremic emergency' },
+      { cls: 'alert-blue', text: 'Use CRRT Na calculator (Calculators tab) for hyponatremia correction on CVVHDF' }
+    ]},
+    { icon: 'ti-link', color: 'green', title: 'Resources', items: [
+      { cls: 'alert-green', text: 'KDIGO AKI Guidelines 2012', link: 'https://kdigo.org/guidelines/acute-kidney-injury/' },
+      { cls: 'alert-green', text: 'UNC CRRT Protocol (add SharePoint link)', link: '#' },
+      { cls: 'alert-green', text: 'Teixeira: CRRT hyponatremia correction (AJKD 2025)', link: 'https://www.ajkd.org' }
+    ]}
+  ]},
+  floor: { label: 'Consult / Floor', cards: [
+    { icon: 'ti-alert-triangle', color: 'red', title: 'Critical reminders', items: [
+      { cls: 'alert-red', text: 'Nephrology is a consultant — primary team is responsible for code status and disposition' },
+      { cls: 'alert-red', text: 'Contrast: hold metformin 48h post-contrast if eGFR <60' },
+      { cls: 'alert-red', text: 'NSAIDs: avoid in CKD ≥ stage 3b (AKI risk, hyperkalemia)' },
+      { cls: 'alert-red', text: 'Gadolinium: avoid if eGFR <30 — risk of nephrogenic systemic fibrosis' }
+    ]},
+    { icon: 'ti-clipboard-list', color: 'blue', title: 'Quick reference', items: [
+      { cls: 'alert-blue', text: 'AKI workup: UA with micro, FENa, urine protein/Cr, renal US, medication reconciliation' },
+      { cls: 'alert-blue', text: 'FENa <1% prerenal or contrast; >2% intrinsic. Use FEUrea if on diuretics.' },
+      { cls: 'alert-blue', text: 'Hyperkalemia: ECG first. Peaked T-waves → calcium gluconate before anything else.' },
+      { cls: 'alert-blue', text: 'Urine sediment: RBC casts = GN; WBC casts = pyelo/AIN; granular = ATN' }
+    ]},
+    { icon: 'ti-link', color: 'green', title: 'Resources', items: [
+      { cls: 'alert-green', text: 'KDIGO CKD Guidelines 2024', link: 'https://kdigo.org/guidelines/ckd-evaluation-and-management/' },
+      { cls: 'alert-green', text: 'UNC Consult Template (add SharePoint link)', link: '#' }
+    ]}
+  ]},
+  transplant: { label: 'Transplant', cards: [
+    { icon: 'ti-alert-triangle', color: 'red', title: 'Critical reminders', items: [
+      { cls: 'alert-red', text: 'Tacrolimus: draw level before morning dose. Target varies by protocol and time post-transplant.' },
+      { cls: 'alert-red', text: 'BK viremia >10,000 copies/mL: reduce immunosuppression. Avoid cidofovir routinely.' },
+      { cls: 'alert-red', text: 'DGF: maintain perfusion, avoid nephrotoxins, daily creatinine monitoring' },
+      { cls: 'alert-red', text: 'New hyperkalemia post-transplant: check tacrolimus level, rule out obstruction, evaluate for rejection' }
+    ]},
+    { icon: 'ti-clipboard-list', color: 'blue', title: 'Quick reference', items: [
+      { cls: 'alert-blue', text: 'Rejection: biopsy is gold standard — Banff classification' },
+      { cls: 'alert-blue', text: 'PCP prophylaxis: TMP-SMX preferred; atovaquone if sulfa allergy' },
+      { cls: 'alert-blue', text: 'CMV: D+/R− highest risk. Valganciclovir prophylaxis per UNC protocol.' },
+      { cls: 'alert-blue', text: 'DSA monitoring: 1, 3, 6, 12 months post-transplant per UNC protocol' }
+    ]},
+    { icon: 'ti-link', color: 'green', title: 'Resources', items: [
+      { cls: 'alert-green', text: 'KDIGO Transplant Guidelines', link: 'https://kdigo.org/guidelines/kidney-transplant/' },
+      { cls: 'alert-green', text: 'UNC Transplant Protocols (add SharePoint link)', link: '#' }
+    ]}
+  ]},
+  biopsy: { label: 'Biopsy', cards: [
+    { icon: 'ti-alert-triangle', color: 'red', title: 'Critical reminders', items: [
+      { cls: 'alert-red', text: 'Hold antiplatelets: aspirin and clopidogrel 5–7 days pre-biopsy' },
+      { cls: 'alert-red', text: 'BP target <160/100 day of procedure — delay if not controlled' },
+      { cls: 'alert-red', text: 'Post-biopsy: bedrest 4–6h, vitals q30min ×4, Hgb check in 4–6h' },
+      { cls: 'alert-red', text: 'Gross hematuria with clots or hemodynamic instability → IR/urology emergently' }
+    ]},
+    { icon: 'ti-clipboard-list', color: 'blue', title: 'Quick reference', items: [
+      { cls: 'alert-blue', text: 'Pre-biopsy labs: CBC, PT/INR, PTT, type & screen, Cr, UA' },
+      { cls: 'alert-blue', text: 'DDAVP: 0.3 mcg/kg IV in uremic or high bleeding-risk patients' },
+      { cls: 'alert-blue', text: 'Adequate sample: ≥2 cores with ≥7–10 glomeruli each' },
+      { cls: 'alert-blue', text: 'Tissue handling: fresh → IF (or Zeus media); formalin → LM; glutaraldehyde → EM' }
+    ]},
+    { icon: 'ti-link', color: 'green', title: 'Resources', items: [
+      { cls: 'alert-green', text: 'UNC Biopsy Protocol (add SharePoint link)', link: '#' },
+      { cls: 'alert-green', text: 'UNC Pathology Tissue Handling Guide (add link)', link: '#' }
+    ]}
+  ]},
+  clinic: { label: 'Outpatient', cards: [
+    { icon: 'ti-alert-triangle', color: 'red', title: 'Critical reminders', items: [
+      { cls: 'alert-red', text: 'SGLT2i: hold before surgeries and procedures (euglycemic DKA risk). Restart when eating.' },
+      { cls: 'alert-red', text: 'GLP-1 RA: assess for gastroparesis risk before procedures requiring anesthesia' },
+      { cls: 'alert-red', text: 'Finerenone: check K⁺ within 4 weeks of initiation — hold if >5.0 mEq/L' },
+      { cls: 'alert-red', text: 'Vaccinations: Pneumovax, annual flu, HBV (check titers), Shingrix if immunosuppressed' }
+    ]},
+    { icon: 'ti-clipboard-list', color: 'blue', title: 'Quick reference', items: [
+      { cls: 'alert-blue', text: 'CKD staging: KDIGO 2024 heat map — eGFR + ACR categories' },
+      { cls: 'alert-blue', text: 'BP target: <120/80 if tolerated (SPRINT); proteinuric CKD prioritize RAAS blockade' },
+      { cls: 'alert-blue', text: 'Anemia: iron studies, retic, B12/folate before starting ESA' },
+      { cls: 'alert-blue', text: 'KFRE >10% at 2yr: initiate AV fistula referral and transplant evaluation conversation' }
+    ]},
+    { icon: 'ti-link', color: 'green', title: 'Resources', items: [
+      { cls: 'alert-green', text: 'KDIGO CKD 2024 Guidelines', link: 'https://kdigo.org/guidelines/ckd-evaluation-and-management/' },
+      { cls: 'alert-green', text: 'UNC CKM Clinic Protocol (add link)', link: '#' }
+    ]}
+  ]},
+  hd: { label: 'HD / PD', cards: [
+    { icon: 'ti-alert-triangle', color: 'red', title: 'Critical reminders', items: [
+      { cls: 'alert-red', text: 'Intradialytic hypotension: cool dialysate (35.5°C), reassess dry weight, reduce UF rate' },
+      { cls: 'alert-red', text: 'Tunneled catheter infection: cultures from each lumen + peripheral. Do not pull unless unstable — ID consult.' },
+      { cls: 'alert-red', text: 'PD peritonitis: WBC >100/µL with >50% PMN → empiric IP vancomycin + ceftazidime' },
+      { cls: 'alert-red', text: 'Antibiotic dosing: most agents cleared by HD — dose after session, not before' }
+    ]},
+    { icon: 'ti-clipboard-list', color: 'blue', title: 'Quick reference', items: [
+      { cls: 'alert-blue', text: 'Kt/V targets: ≥1.4 per HD session; weekly ≥1.7 for PD' },
+      { cls: 'alert-blue', text: 'HD adequacy: monthly BUN pre/post, Kt/V, interdialytic weight gain, BP log' },
+      { cls: 'alert-blue', text: 'Heparin-free HD: use post-op, post-biopsy, active bleeding. Saline flushes q30min.' },
+      { cls: 'alert-blue', text: 'Access surveillance: monthly physical exam, quarterly flow measurements per UNC protocol' }
+    ]},
+    { icon: 'ti-link', color: 'green', title: 'Resources', items: [
+      { cls: 'alert-green', text: 'KDOQI HD Adequacy Guidelines', link: 'https://www.kidney.org/professionals/guidelines' },
+      { cls: 'alert-green', text: 'UNC Dialysis Unit Protocols (add link)', link: '#' }
+    ]}
+  ]},
+  home: { label: 'Home therapies', cards: [
+    { icon: 'ti-alert-triangle', color: 'red', title: 'Critical reminders', items: [
+      { cls: 'alert-red', text: 'Exit site infection: S. aureus most common — topical mupirocin prophylaxis reduces risk' },
+      { cls: 'alert-red', text: 'Fibrin sheath on PD catheter: try tPA instillation before declaring catheter failure' },
+      { cls: 'alert-red', text: 'HHD: care partner training must be documented; home visit completed pre-discharge' },
+      { cls: 'alert-red', text: 'Travel: plan supply shipment ≥3–4 weeks in advance' }
+    ]},
+    { icon: 'ti-clipboard-list', color: 'blue', title: 'Quick reference', items: [
+      { cls: 'alert-blue', text: 'APD vs CAPD: APD (cycler) for daytime obligations; CAPD for simpler regimen' },
+      { cls: 'alert-blue', text: 'Transport: fast transporters → APD short dwells; slow → CAPD long dwells' },
+      { cls: 'alert-blue', text: 'HHD: 3–4 sessions/week target; weekly Kt/V ≥3.0 recommended' },
+      { cls: 'alert-blue', text: 'Encapsulating peritoneal sclerosis: rare but life-threatening — risk after >5yr PD or recurrent peritonitis' }
+    ]},
+    { icon: 'ti-link', color: 'green', title: 'Resources', items: [
+      { cls: 'alert-green', text: 'ISPD PD Peritonitis Guidelines 2022', link: 'https://www.ispd.org' },
+      { cls: 'alert-green', text: 'UNC Home Therapies Training Checklist (add link)', link: '#' }
+    ]}
+  ]}
+};
+
+const iconColor = { red: 'var(--danger)', blue: 'var(--info)', green: 'var(--success)' };
+const itemIcon  = { 'alert-red': 'ti-alert-circle', 'alert-blue': 'ti-info-circle', 'alert-green': 'ti-external-link' };
+let openCards = {};
+
+function renderRotation(key) {
+  const rot = ROTATIONS[key]; if (!rot) return;
+  document.getElementById('rotMain').innerHTML = rot.cards.map((card, i) => {
+    const k = key + '-' + i;
+    const open = openCards[k] !== false;
+    return `<div class="info-card">
+      <div class="info-card-header" onclick="toggleCard('${k}')">
+        <div class="info-card-label">
+          <i class="ti ${card.icon}" style="color:${iconColor[card.color]}"></i>
+          <span>${card.title}</span>
+        </div>
+        <i class="ti ti-chevron-up chevron ${open ? 'open' : ''}" id="chev-${k}"></i>
+      </div>
+      <div class="info-card-body ${open ? '' : 'collapsed'}" id="card-${k}">
+        ${card.items.map(item => `<div class="alert-item ${item.cls}">
+          <i class="ti ${itemIcon[item.cls]}"></i>
+          <span>${item.link && item.link !== '#' ? `<a href="${item.link}" target="_blank">${item.text}</a>` : item.text}</span>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleCard(k) {
+  openCards[k] = openCards[k] === false ? true : false;
+  document.getElementById('card-' + k).classList.toggle('collapsed', openCards[k] === false);
+  const chev = document.getElementById('chev-' + k);
+  chev.classList.toggle('open', openCards[k] !== false);
+}
+
+document.getElementById('rotSidebar').addEventListener('click', e => {
+  const btn = e.target.closest('.rot-sidebar-btn'); if (!btn) return;
+  document.querySelectorAll('.rot-sidebar-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderRotation(btn.dataset.rot);
+});
+renderRotation('icu');
+
+document.querySelector('.calc-sidebar').addEventListener('click', e => {
+  const btn = e.target.closest('.calc-sidebar-btn'); if (!btn) return;
+  document.querySelectorAll('.calc-sidebar-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.calc-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('calc-' + btn.dataset.calc).classList.add('active');
+});
+
+function switchSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.top-nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── Calculator helpers ──
+const g = id => parseFloat(document.getElementById(id).value);
+const gv = id => document.getElementById(id).value;
+const gc = id => document.getElementById(id).checked;
+const out = (id, html) => document.getElementById(id).innerHTML = html;
+const rbox = (cls, rows, note) =>
+  `<div class="result-box ${cls}">${rows.map(r => `<div class="result-row">${r}</div>`).join('')}${note ? `<div class="result-note">${note}</div>` : ''}</div>`;
+
+function calcFWD() {
+  const wt = g('fwd-wt'), na = g('fwd-na'), sex = gv('fwd-sex'), el = gc('fwd-elderly');
+  if (!wt || !na) { out('fwd-result', ''); return; }
+  const f = el ? (sex === 'male' ? 0.5 : 0.45) : (sex === 'male' ? 0.6 : 0.5);
+  const tbw = (f * wt).toFixed(1), def = (f * wt * (na - 140) / 140).toFixed(1);
+  out('fwd-result', rbox('result-blue', [`<strong>TBW:</strong> ${tbw} L`, `<strong>Free water deficit:</strong> ${def} L`],
+    parseFloat(def) > 0 ? `Replace ${Math.abs(def)} L over 48–72h (max 0.5 mEq/L/hr correction)` : 'No free water deficit'));
+}
+function calcEFWC() {
+  const vol = g('efwc-vol'), una = g('efwc-una'), uk = g('efwc-uk'), sna = g('efwc-sna');
+  if (!vol || !una || !uk || !sna) { out('efwc-result', ''); return; }
+  const efwc = (vol * (1 - (una + uk) / sna)).toFixed(1);
+  out('efwc-result', rbox('result-blue', [`<strong>EFWC:</strong> ${efwc} L/day`],
+    parseFloat(efwc) > 0 ? 'Positive: excreting free water (dilute urine relative to electrolytes)' : 'Negative: retaining free water — consider SIADH or impaired water excretion'));
+}
+function calcOFWC() {
+  const vol = g('ofwc-vol'), uosm = g('ofwc-uosm'), sosm = g('ofwc-sosm');
+  if (!vol || !uosm || !sosm) { out('ofwc-result', ''); return; }
+  const ofwc = (vol * (1 - uosm / sosm)).toFixed(1);
+  out('ofwc-result', rbox('result-blue', [`<strong>OFWC:</strong> ${ofwc} L/day`],
+    parseFloat(ofwc) > 0 ? 'Positive: dilute urine, free water being excreted' : 'Negative: concentrated urine, free water being retained'));
+}
+function calcWinters() {
+  const hco3 = g('win-hco3'); if (!hco3) { out('win-result', ''); return; }
+  const exp = (1.5 * hco3 + 8).toFixed(1);
+  out('win-result', rbox('result-green', [`<strong>Expected PCO₂:</strong> ${exp} mmHg`, `<strong>Acceptable range:</strong> ${(parseFloat(exp) - 2).toFixed(1)}–${(parseFloat(exp) + 2).toFixed(1)} mmHg`],
+    'Higher actual PCO₂ → concurrent respiratory acidosis. Lower → respiratory alkalosis.'));
+}
+function calcDD() {
+  const ag = g('dd-ag'), hco3 = g('dd-hco3'); if (!ag || !hco3) { out('dd-result', ''); return; }
+  const dAG = (ag - 12).toFixed(1), dHCO3 = (24 - hco3).toFixed(1), ratio = (parseFloat(dAG) / parseFloat(dHCO3)).toFixed(2);
+  const rv = parseFloat(ratio);
+  const interp = rv < 0.4 ? 'Ratio <0.4 — non-gap acidosis or mixed' : rv <= 0.8 ? 'Ratio 0.4–0.8 — mixed high-gap and non-gap' : rv < 2 ? 'Ratio 0.8–2 — pure anion gap acidosis' : 'Ratio >2 — AG acidosis + concurrent metabolic alkalosis';
+  out('dd-result', rbox('result-green', [`<strong>ΔAG:</strong> ${dAG} &nbsp; <strong>ΔHCO₃:</strong> ${dHCO3} &nbsp; <strong>Ratio:</strong> ${ratio}`], interp));
+}
+function calcUOG() {
+  const uosm = g('uog-uosm'), una = g('uog-una'), uk = g('uog-uk'), bun = g('uog-bun') || 0;
+  if (!uosm || !una || !uk) { out('uog-result', ''); return; }
+  const calc = (2 * (una + uk) + bun / 2.8).toFixed(0), gap = (uosm - calc).toFixed(0);
+  out('uog-result', rbox('result-green', [`<strong>Calculated Osm:</strong> ${calc} mOsm/kg`, `<strong>Osmolar gap:</strong> ${gap} mOsm/kg`],
+    parseFloat(gap) > 100 ? 'Gap >100: unmeasured osmoles (NH4+), intact distal acidification — seen in GI losses' : 'Gap <100: impaired NH4+ excretion — consider RTA'));
+}
+function calcCRRT() {
+  const pna = g('crrt-pna'), tna = g('crrt-tna'), rf = g('crrt-rf'), sna = g('crrt-sna');
+  if (!pna || !tna || !rf || !sna) { out('crrt-result', ''); return; }
+  const d5w = (rf * (sna - tna) / tna).toFixed(0), total = (rf + parseFloat(d5w)).toFixed(0), effNa = (sna * rf / parseFloat(total)).toFixed(1);
+  out('crrt-result', rbox('result-purple', [`<strong>D5W rate:</strong> ${d5w} mL/hr`, `<strong>Total effluent:</strong> ${total} mL/hr`, `<strong>Effective Na:</strong> ${effNa} mEq/L`],
+    'Target 4–6 mEq/L correction in 24h. Check Na q2–4h.'));
+}
+function calcKFRE() {
+  const age = g('kfre-age'), sex = gv('kfre-sex'), egfr = g('kfre-egfr'), acr = g('kfre-acr'), region = gv('kfre-region');
+  if (!age || !egfr || !acr) { out('kfre-result', ''); return; }
+  const xb = -0.199 * Math.log(age / 10) + 0.166 * (sex === 'male' ? 1 : 0) - 0.451 * Math.log(egfr / 5) + 0.451 * Math.log(acr);
+  const s2 = region === 'northamerica' ? 0.9832 : 0.9780, s5 = region === 'northamerica' ? 0.9365 : 0.9240;
+  const r2 = ((1 - Math.pow(s2, Math.exp(xb))) * 100).toFixed(1), r5 = ((1 - Math.pow(s5, Math.exp(xb))) * 100).toFixed(1);
+  out('kfre-result', rbox('result-purple', [`<strong>2-yr ESKD risk:</strong> ${r2}%`, `<strong>5-yr ESKD risk:</strong> ${r5}%`],
+    parseFloat(r2) > 10 ? 'High risk (>10% at 2yr): consider nephrology referral and AV fistula discussion' : 'Lower risk: continue monitoring and optimize CKD care'));
+}
+function calcPREVENT() {
+  const age = g('prev-age'), sex = gv('prev-sex'), sbp = g('prev-sbp'), tc = g('prev-tc'), hdl = g('prev-hdl'), egfr = g('prev-egfr'), acr = g('prev-acr');
+  if (!age || !sbp || !tc || !hdl || !egfr || !acr) { out('prev-result', ''); return; }
+  const xb = 0.51125 * Math.log(age) - 0.26606 * (sex === 'female' ? 1 : 0) + 0.53115 * Math.log(sbp) + 0.27925 * Math.log(tc) - 0.43980 * Math.log(hdl) - 0.26010 * Math.log(egfr) + 0.13546 * Math.log(Math.max(acr, 1)) + 0.11031 * (gc('prev-bpmeds') ? 1 : 0) - 0.11291 * (gc('prev-statin') ? 1 : 0) + 0.38824 * (gc('prev-dm') ? 1 : 0) + 0.43384 * (gc('prev-smoke') ? 1 : 0);
+  const r10 = ((1 - Math.pow(0.9533, Math.exp(xb))) * 100).toFixed(1), r30 = ((1 - Math.pow(0.8016, Math.exp(xb))) * 100).toFixed(1);
+  const rv = parseFloat(r10), cat = rv < 5 ? 'Low risk' : rv < 7.5 ? 'Borderline risk' : rv < 20 ? 'Intermediate risk' : 'High risk';
+  out('prev-result', rbox('result-red', [`<strong>10-yr CVD risk:</strong> ${r10}%`, `<strong>30-yr CVD risk:</strong> ${r30}%`, `<strong>Category:</strong> ${cat}`],
+    'PREVENT integrates eGFR and urine ACR into cardiovascular risk estimation'));
+}
+
+document.querySelectorAll('#calc-electrolytes input, #calc-electrolytes select').forEach(el => el.addEventListener('input', () => { calcFWD(); calcEFWC(); calcOFWC(); }));
+document.querySelectorAll('#calc-acidbase input').forEach(el => el.addEventListener('input', () => { calcWinters(); calcDD(); calcUOG(); }));
+document.querySelectorAll('#calc-dialysis input, #calc-dialysis select').forEach(el => el.addEventListener('input', () => { calcCRRT(); calcKFRE(); }));
+document.querySelectorAll('#calc-general input, #calc-general select').forEach(el => el.addEventListener('input', calcPREVENT));
+
+// ── Duty hours (localStorage for standalone file) ──
+let isClockedIn = false, clockInTime = null, shiftLog = [];
+
+function loadDutyData() {
+  try {
+    const raw = localStorage.getItem('unc-duty-log');
+    if (raw) {
+      const d = JSON.parse(raw);
+      shiftLog = d.shiftLog || [];
+      if (d.clockInTime) {
+        isClockedIn = true; clockInTime = new Date(d.clockInTime);
+        document.getElementById('clockBtn').textContent = 'Clock out';
+        document.getElementById('clockBtn').className = 'btn-clock btn-out';
+        document.getElementById('clockStatus').textContent = 'Currently clocked in';
+        document.getElementById('clockSub').textContent = 'Started: ' + clockInTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
+    }
+  } catch(e) {}
+  renderLog(); updateStats();
+}
+
+function saveDutyData() {
+  try { localStorage.setItem('unc-duty-log', JSON.stringify({ shiftLog, clockInTime: isClockedIn && clockInTime ? clockInTime.toISOString() : null })); } catch(e) {}
+}
+
+function toggleClock() {
+  const now = new Date();
+  if (!isClockedIn) {
+    isClockedIn = true; clockInTime = now;
+    document.getElementById('clockBtn').textContent = 'Clock out';
+    document.getElementById('clockBtn').className = 'btn-clock btn-out';
+    document.getElementById('clockStatus').textContent = 'Currently clocked in';
+    document.getElementById('clockSub').textContent = 'Started: ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  } else {
+    const mins = Math.round((now - clockInTime) / 60000);
+    shiftLog.unshift({ date: clockInTime.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }), inTime: clockInTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), outTime: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), mins, iso: clockInTime.toISOString() });
+    isClockedIn = false; clockInTime = null;
+    document.getElementById('clockBtn').textContent = 'Clock in';
+    document.getElementById('clockBtn').className = 'btn-clock btn-in';
+    document.getElementById('clockStatus').textContent = 'Not clocked in';
+    document.getElementById('clockSub').textContent = '\u00a0';
+    renderLog(); updateStats();
+  }
+  saveDutyData();
+}
+
+function fmtDur(m) { return `${Math.floor(m / 60)}h ${m % 60}m`; }
+
+function renderLog() {
+  const el = document.getElementById('logEntries');
+  el.innerHTML = shiftLog.length ? shiftLog.map(s => `<div class="log-entry"><div><div class="log-date">${s.date}</div><div class="log-detail">${s.inTime} → ${s.outTime}</div></div><div class="log-hours">${fmtDur(s.mins)}</div></div>`).join('') : '<div class="empty-log">No shifts logged yet</div>';
+}
+
+function updateStats() {
+  const today = new Date().toDateString(), weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  let tm = 0, wm = 0;
+  shiftLog.forEach(s => { const d = new Date(s.iso); if (d.toDateString() === today) tm += s.mins; if (d.getTime() >= weekAgo) wm += s.mins; });
+  document.getElementById('statToday').textContent = fmtDur(tm);
+  document.getElementById('statWeek').textContent = fmtDur(wm);
+}
+
+function clearLog() {
+  if (!confirm('Clear all logged shifts?')) return;
+  shiftLog = []; renderLog(); updateStats(); saveDutyData();
+}
+
+function updateLiveClock() {
+  document.getElementById('liveClock').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+}
+setInterval(updateLiveClock, 1000);
+updateLiveClock();
+loadDutyData();
+</script>
+</body>
+</html>
