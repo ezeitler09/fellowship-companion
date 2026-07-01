@@ -97,6 +97,37 @@
   .search { display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: var(--shadow-card); }
   .search .ms { font-size: 20px; color: var(--muted-soft); }
   .search span.ph { font-size: 14px; color: var(--muted-faint); }
+  .search input { flex: 1; border: none; outline: none; font-family: inherit; font-size: 14px; color: var(--ink); background: transparent; }
+  .search input::placeholder { color: var(--muted-faint); }
+  .search .clear { font-size: 20px; color: var(--muted-faint); cursor: pointer; display: none; }
+  .search .clear.show { display: inline-block; }
+
+  /* Search results overlay */
+  .search-results { margin-top: 16px; }
+  .sr-empty { text-align: center; padding: 40px 20px; color: var(--muted-faint); }
+  .sr-empty .ms { font-size: 40px; color: #C2CCD4; display: block; margin-bottom: 10px; }
+  .sr-empty-title { font-size: 15px; font-weight: 600; color: var(--muted); }
+  .sr-empty-sub { font-size: 13px; margin-top: 4px; }
+  .sr-group-label { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-soft); font-weight: 700; margin: 18px 2px 8px; }
+  .sr-group-label:first-child { margin-top: 4px; }
+  .sr-row { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-bottom: 1px solid var(--border-faint); cursor: pointer; width: 100%; text-align: left; background: #fff; }
+  .sr-row:first-child { border-radius: 14px 14px 0 0; }
+  .sr-row:last-child { border-bottom: none; border-radius: 0 0 14px 14px; }
+  .sr-row:only-child { border-radius: 14px; }
+  .sr-ico { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex: none; }
+  .sr-ico .ms { font-size: 19px; }
+  .sr-ico.t-calc { background: var(--sky); } .sr-ico.t-calc .ms { color: var(--carolina-deep); }
+  .sr-ico.t-rot { background: var(--normal-bg); } .sr-ico.t-rot .ms { color: var(--normal); }
+  .sr-ico.t-item { background: var(--surface); } .sr-ico.t-item .ms { color: var(--muted); }
+  .sr-body { flex: 1; min-width: 0; }
+  .sr-title { font-size: 14px; font-weight: 600; color: var(--ink); }
+  .sr-title mark { background: #FFF1B8; color: inherit; border-radius: 3px; padding: 0 1px; }
+  .sr-crumb { font-size: 12px; color: var(--muted-faint); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sr-list-card { background: #fff; border: 1px solid var(--border-soft); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow-card); }
+
+  /* Flash highlight when jumping to a card */
+  @keyframes cardflash { 0%,100% { box-shadow: var(--shadow-card); } 25%,75% { box-shadow: 0 0 0 3px rgba(75,156,211,.5); } }
+  .info-card.flash { animation: cardflash 1.3s ease; }
 
   /* ── Category grid ── */
   .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
@@ -291,9 +322,13 @@
     <div class="body scroll-y">
       <div class="search">
         <span class="ms">search</span>
-        <span class="ph">Search tools, numbers, protocols</span>
+        <input type="text" id="searchInput" placeholder="Search tools, numbers, protocols" autocomplete="off" oninput="onSearch(this.value)">
+        <span class="ms clear" id="searchClear" onclick="clearSearch()">close</span>
       </div>
 
+      <div class="search-results" id="searchResults" style="display:none;"></div>
+
+      <div id="homeDefault">
       <div class="cat-grid">
         <button class="cat-card" onclick="go('rotations')">
           <div class="cat-ico"><span class="ms">menu_book</span></div>
@@ -331,6 +366,7 @@
           <button class="list-row" onclick="openRotation('biopsy')"><div class="list-row-ico"><span class="ms">colorize</span></div><div class="list-row-label">Biopsy rotation</div><span class="ms chev">chevron_right</span></button>
         </div>
       </div>
+      </div><!-- /homeDefault -->
     </div>
   </div>
 
@@ -465,6 +501,122 @@ function go(screen) {
   const tabKey = screen === 'calc-detail' ? 'calculators' : screen;
   if (TABS.includes(tabKey)) document.getElementById('tab-' + tabKey).classList.add('active');
   document.querySelectorAll('.body').forEach(b => b.scrollTop = 0);
+}
+
+// ═══════════════ SEARCH ═══════════════
+function escHtml(s) { return s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+function escReg(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+function highlight(text, q) {
+  const safe = escHtml(text);
+  if (!q) return safe;
+  try { return safe.replace(new RegExp('(' + escReg(escHtml(q)) + ')', 'ig'), '<mark>$1</mark>'); }
+  catch (e) { return safe; }
+}
+
+// Build a flat searchable index from calculators + live rotation data
+function buildSearchIndex() {
+  const idx = [];
+  CALCS.forEach(c => {
+    idx.push({ type: 'calc', id: c.id, title: c.title, sub: c.sub, group: c.group,
+      hay: (c.title + ' ' + c.sub + ' ' + c.group).toLowerCase(), action: () => openCalc(c.id) });
+  });
+  Object.entries(ROTATIONS).forEach(([rid, rot]) => {
+    idx.push({ type: 'rot', id: rid, title: rot.label, sub: 'Rotation',
+      hay: rot.label.toLowerCase(), action: () => openRotation(rid) });
+    (rot.cards || []).forEach((card, ci) => {
+      (card.items || []).forEach(it => {
+        idx.push({ type: 'item', id: rid + '-' + ci, title: it.text, sub: rot.label + ' · ' + card.title,
+          hay: it.text.toLowerCase(), rid, ci, action: () => openRotationCard(rid, ci) });
+      });
+    });
+  });
+  return idx;
+}
+
+function onSearch(q) {
+  const query = q.trim();
+  document.getElementById('searchClear').classList.toggle('show', query.length > 0);
+  const results = document.getElementById('searchResults');
+  const home = document.getElementById('homeDefault');
+  if (!query) { results.style.display = 'none'; home.style.display = ''; results.innerHTML = ''; return; }
+  home.style.display = 'none';
+  results.style.display = '';
+
+  const ql = query.toLowerCase();
+  const terms = ql.split(/\s+/).filter(Boolean);
+  const idx = buildSearchIndex();
+  const hits = idx
+    .map(e => {
+      let score = 0;
+      for (const t of terms) { if (!e.hay.includes(t)) return null; }
+      if (e.title.toLowerCase().startsWith(ql)) score += 10;
+      if (e.hay.startsWith(ql)) score += 5;
+      score += (e.type === 'calc' ? 3 : e.type === 'rot' ? 2 : 0);
+      return { e, score };
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.score - a.score || a.e.title.length - b.e.title.length);
+
+  if (!hits.length) {
+    results.innerHTML = `<div class="sr-empty"><span class="ms">search_off</span>
+      <div class="sr-empty-title">No results for "${escHtml(query)}"</div>
+      <div class="sr-empty-sub">Try a calculator name, rotation, drug, or lab value.</div></div>`;
+    return;
+  }
+
+  const order = { calc: 0, rot: 1, item: 2 };
+  const labels = { calc: 'Calculators', rot: 'Rotations', item: 'In rotation content' };
+  const icons = { calc: 'calculate', rot: 'menu_book', item: 'subject' };
+  const grouped = {};
+  hits.slice(0, 40).forEach(h => { (grouped[h.e.type] = grouped[h.e.type] || []).push(h.e); });
+
+  let html = '';
+  Object.keys(order).sort((a, b) => order[a] - order[b]).forEach(type => {
+    const list = grouped[type]; if (!list) return;
+    html += `<div class="sr-group-label">${labels[type]}</div><div class="sr-list-card">`;
+    html += list.map((e, i) => `<button class="sr-row" data-si="${type}-${i}">
+      <div class="sr-ico t-${type}"><span class="ms">${icons[type]}</span></div>
+      <div class="sr-body">
+        <div class="sr-title">${highlight(e.title, query)}</div>
+        <div class="sr-crumb">${escHtml(e.sub || '')}</div>
+      </div>
+      <span class="ms" style="font-size:20px;color:#C2CCD4;">chevron_right</span>
+    </button>`).join('');
+    html += `</div>`;
+    // stash actions
+    list.forEach((e, i) => { searchActions[type + '-' + i] = e.action; });
+  });
+  results.innerHTML = html;
+  results.querySelectorAll('.sr-row').forEach(row => {
+    row.onclick = () => { const fn = searchActions[row.dataset.si]; clearSearch(); if (fn) fn(); };
+  });
+}
+let searchActions = {};
+
+function clearSearch() {
+  const input = document.getElementById('searchInput');
+  input.value = '';
+  document.getElementById('searchClear').classList.remove('show');
+  document.getElementById('searchResults').style.display = 'none';
+  document.getElementById('searchResults').innerHTML = '';
+  document.getElementById('homeDefault').style.display = '';
+}
+
+// Open a rotation and expand+flash a specific card
+function openRotationCard(rid, ci) {
+  go('rotations');
+  if (ROTATIONS[rid]) selectRotation(rid);
+  setTimeout(() => {
+    const k = rid + '-' + ci;
+    if (openState[k] === false) toggleInfo(k);
+    const body = document.getElementById('body-' + k);
+    const card = body ? body.closest('.info-card') : null;
+    if (card) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card.classList.add('flash');
+      setTimeout(() => card.classList.remove('flash'), 1400);
+    }
+  }, 120);
 }
 
 // ═══════════════ GREETING + PROFILE ═══════════════
