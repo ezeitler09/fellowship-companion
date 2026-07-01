@@ -2,960 +2,930 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UNC Nephrology Fellowship</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>UNC Nephrology Fellows</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=block">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --unc-navy: #13294B;
-    --unc-blue: #4B9CD3;
-    --unc-blue-light: #E8F4FC;
-    --bg: #f5f6f8;
-    --bg-white: #ffffff;
-    --bg-secondary: #f0f2f5;
-    --border: #e2e5ea;
-    --text: #1a1d23;
-    --text-secondary: #6b7280;
-    --text-muted: #9ca3af;
-    --danger: #dc2626;
-    --danger-bg: #fef2f2;
-    --info: #2563eb;
-    --info-bg: #eff6ff;
-    --success: #16a34a;
-    --success-bg: #f0fdf4;
-    --purple-bg: #f3f0ff;
-    --purple: #5b21b6;
-    --radius: 10px;
-    --radius-sm: 6px;
-    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --carolina: #4B9CD3;
+    --carolina-deep: #2F7FB8;
+    --navy: #13294B;
+    --sky: #EAF4FB;
+    --ink: #16202B;
+    --muted: #62707C;
+    --muted-soft: #8A97A2;
+    --muted-faint: #9AA6B0;
+    --surface: #F2F4F6;
+    --surface-2: #F7F9FB;
+    --border: #E4E8EC;
+    --border-soft: #EAEEF1;
+    --border-faint: #F0F3F5;
+    --normal: #2E7D5B;
+    --normal-bg: #E7F3EC;
+    --caution: #B7791F;
+    --caution-bg: #FBF1DF;
+    --critical: #C0392B;
+    --critical-bg: #FBEAE7;
+    --shadow-card: 0 1px 2px rgba(16,32,43,.04);
+    --shadow-float: 0 12px 36px rgba(16,32,43,.16);
   }
-
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    font-size: 14px;
-    line-height: 1.5;
+    font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .ms { font-family: 'Material Symbols Rounded'; font-weight: normal; font-style: normal; line-height: 1; letter-spacing: normal; text-transform: none; display: inline-block; white-space: nowrap; word-wrap: normal; direction: ltr; }
+  /* Hide raw icon-name text until the symbol font is confirmed loaded, so a slow or
+     blocked font network never shows literal text like "menu_book". JS reveals on
+     font-ready, with a timeout fallback so icons are never permanently hidden. */
+  body:not(.ms-ready) .ms { visibility: hidden; }
+  .scroll-y::-webkit-scrollbar, .scroll-x::-webkit-scrollbar { display: none; }
+  .scroll-y, .scroll-x { -ms-overflow-style: none; scrollbar-width: none; }
+  input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  input[type=number] { -moz-appearance: textfield; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+  /* ── App shell: phone frame on desktop, full-bleed on mobile ── */
+  .app-frame {
+    max-width: 480px;
+    margin: 0 auto;
     min-height: 100vh;
+    min-height: 100dvh;
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: var(--shadow-float);
+  }
+  @media (min-width: 520px) {
+    body { padding: 24px 0; background: #E6E8EB; }
+    .app-frame { min-height: calc(100vh - 48px); border-radius: 28px; overflow: hidden; }
   }
 
   /* ── Header ── */
-  .app-header {
-    background: var(--unc-navy);
-    padding: 14px 24px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .app-header i { font-size: 28px; color: var(--unc-blue); }
-  .app-header-title { font-size: 18px; font-weight: 600; color: #fff; }
-  .app-header-sub { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 1px; }
+  .hdr { background: var(--carolina); color: #fff; padding: 18px 20px 20px; padding-top: calc(18px + env(safe-area-inset-top)); }
+  .hdr-top { display: flex; align-items: center; justify-content: space-between; }
+  .hdr-kicker { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; opacity: .85; }
+  .hdr-title { font-size: 18px; font-weight: 700; letter-spacing: -.01em; }
+  .hdr-avatar { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,.22); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; }
+  .hdr-greet { margin-top: 16px; }
+  .hdr-greet-sm { font-size: 13px; opacity: .9; }
+  .hdr-greet-lg { font-family: 'Source Serif 4', serif; font-size: 24px; font-weight: 600; line-height: 1.1; margin-top: 2px; }
+  .hdr-chip { display: inline-flex; align-items: center; gap: 7px; margin-top: 12px; background: rgba(255,255,255,.18); padding: 6px 11px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+  .hdr-chip .dot { width: 7px; height: 7px; border-radius: 50%; background: #8FE3B0; }
 
-  /* ── Top Nav ── */
-  .top-nav {
-    background: var(--bg-white);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    position: sticky;
-    top: 56px;
-    z-index: 99;
-  }
-  .top-nav-btn {
-    flex: 1;
-    padding: 14px 12px;
-    font-size: 14px;
-    font-weight: 500;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    color: var(--text-secondary);
-    border-bottom: 3px solid transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: color 0.15s, border-color 0.15s;
-  }
-  .top-nav-btn i { font-size: 18px; }
-  .top-nav-btn:hover { color: var(--unc-blue); background: var(--unc-blue-light); }
-  .top-nav-btn.active { color: var(--unc-blue); border-bottom-color: var(--unc-blue); }
+  /* Sub-page header (back bar) */
+  .subhdr { background: #fff; padding: 14px 16px; padding-top: calc(14px + env(safe-area-inset-top)); border-bottom: 1px solid var(--border-soft); display: flex; align-items: center; gap: 12px; }
+  .subhdr .back { font-size: 24px; color: var(--navy); cursor: pointer; }
+  .subhdr-title { font-size: 17px; font-weight: 700; color: var(--navy); letter-spacing: -.01em; }
+  .subhdr-sub { font-size: 12px; color: var(--muted-soft); margin-top: 1px; }
 
-  /* ── Sections ── */
-  .section { display: none; }
-  .section.active { display: flex; }
+  /* ── Scroll body ── */
+  .body { flex: 1; overflow-y: auto; padding: 16px; padding-bottom: 92px; }
 
-  /* ── Rotation layout ── */
-  .rot-layout { width: 100%; min-height: calc(100vh - 113px); }
-  .rot-sidebar {
-    width: 180px;
-    flex-shrink: 0;
-    background: var(--bg-white);
-    border-right: 1px solid var(--border);
-    padding: 12px 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    position: sticky;
-    top: 113px;
-    height: calc(100vh - 113px);
-    overflow-y: auto;
-  }
-  .rot-sidebar-btn {
-    width: 100%;
-    text-align: left;
-    padding: 10px 14px;
-    font-size: 13px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    color: var(--text-secondary);
-    border-radius: var(--radius-sm);
-    transition: background 0.12s, color 0.12s;
-    font-weight: 500;
-  }
-  .rot-sidebar-btn:hover:not(.active) { background: var(--bg-secondary); color: var(--text); }
-  .rot-sidebar-btn.active { background: var(--unc-blue); color: #fff; }
+  /* ── Screens ── */
+  .screen { display: none; flex-direction: column; flex: 1; }
+  .screen.active { display: flex; }
 
-  .rot-main {
-    flex: 1;
-    padding: 20px 24px;
-    max-width: 900px;
-  }
+  /* ── Search (static) ── */
+  .search { display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; box-shadow: var(--shadow-card); }
+  .search .ms { font-size: 20px; color: var(--muted-soft); }
+  .search span.ph { font-size: 14px; color: var(--muted-faint); }
 
-  /* ── Info cards ── */
-  .info-card {
-    background: var(--bg-white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    margin-bottom: 12px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
-  }
-  .info-card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 18px;
-    cursor: pointer;
-    user-select: none;
-    gap: 10px;
-  }
-  .info-card-header:hover { background: var(--bg-secondary); }
-  .info-card-label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-  }
-  .info-card-label i { font-size: 18px; }
-  .chevron { font-size: 16px; color: var(--text-muted); transition: transform 0.2s; }
-  .chevron.open { transform: rotate(180deg); }
+  /* ── Category grid ── */
+  .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .cat-card { background: #fff; border: 1px solid var(--border-soft); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow-card); cursor: pointer; transition: transform .12s, box-shadow .12s; text-align: left; }
+  .cat-card:active { transform: scale(.98); }
+  .cat-ico { width: 42px; height: 42px; border-radius: 12px; background: var(--sky); display: flex; align-items: center; justify-content: center; }
+  .cat-ico .ms { font-size: 24px; color: var(--carolina-deep); }
+  .cat-label { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .cat-sub { font-size: 12px; color: #7A8893; margin-top: 2px; }
 
-  .info-card-body {
-    border-top: 1px solid var(--border);
-    padding: 4px 18px 16px;
-    display: block;
-  }
-  .info-card-body.collapsed { display: none; }
+  .sec-label { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-soft); font-weight: 700; margin-bottom: 10px; }
 
-  .alert-item {
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--bg-secondary);
-    font-size: 13px;
-    line-height: 1.55;
-    color: var(--text);
-  }
-  .alert-item:last-child { border-bottom: none; padding-bottom: 0; }
-  .alert-item i { font-size: 16px; margin-top: 1px; flex-shrink: 0; }
-  .alert-red i { color: var(--danger); }
-  .alert-blue i { color: var(--info); }
-  .alert-green i { color: var(--success); }
-  .alert-green a { color: var(--info); text-decoration: underline; }
-  .alert-green a:hover { color: var(--unc-navy); }
+  /* Quick access chips */
+  .qa-row { display: flex; gap: 8px; overflow-x: auto; }
+  .qa-chip { flex: none; display: flex; align-items: center; gap: 6px; background: #fff; border: 1px solid var(--border); border-radius: 20px; padding: 8px 13px; font-size: 13px; font-weight: 600; color: #27313B; cursor: pointer; }
+  .qa-chip .ms { font-size: 18px; color: var(--carolina); }
 
-  /* ── Calculators layout ── */
-  .calc-layout { width: 100%; min-height: calc(100vh - 113px); }
-  .calc-sidebar {
-    width: 160px;
-    flex-shrink: 0;
-    background: var(--bg-white);
-    border-right: 1px solid var(--border);
-    padding: 12px 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    position: sticky;
-    top: 113px;
-    height: calc(100vh - 113px);
-    overflow-y: auto;
-  }
-  .calc-sidebar-btn {
-    width: 100%;
-    text-align: left;
-    padding: 10px 14px;
-    font-size: 13px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    color: var(--text-secondary);
-    border-radius: var(--radius-sm);
-    font-weight: 500;
-    transition: background 0.12s, color 0.12s;
-  }
-  .calc-sidebar-btn:hover:not(.active) { background: var(--bg-secondary); color: var(--text); }
-  .calc-sidebar-btn.active { background: var(--unc-blue); color: #fff; }
+  /* Recents list */
+  .list-card { background: #fff; border: 1px solid var(--border-soft); border-radius: 16px; overflow: hidden; }
+  .list-row { display: flex; align-items: center; gap: 12px; padding: 13px 14px; border-bottom: 1px solid var(--border-faint); cursor: pointer; width: 100%; text-align: left; }
+  .list-row:last-child { border-bottom: none; }
+  .list-row-ico { width: 34px; height: 34px; border-radius: 9px; background: var(--sky); display: flex; align-items: center; justify-content: center; flex: none; }
+  .list-row-ico .ms { font-size: 20px; color: var(--carolina-deep); }
+  .list-row-label { flex: 1; font-size: 14px; font-weight: 600; color: #27313B; }
+  .list-row .chev { font-size: 20px; color: #C2CCD4; }
 
-  .calc-main { flex: 1; padding: 20px 24px; max-width: 900px; }
-  .calc-pane { display: none; }
-  .calc-pane.active { display: block; }
+  /* ── Rotations ── */
+  .rot-chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 4px; }
+  .rot-chip { flex: none; padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; background: #fff; border: 1px solid var(--border); color: var(--muted); cursor: pointer; white-space: nowrap; }
+  .rot-chip.active { background: var(--carolina); color: #fff; border-color: var(--carolina); }
 
-  .calc-card {
-    background: var(--bg-white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px 20px;
-    margin-bottom: 14px;
-    box-shadow: var(--shadow);
-  }
-  .calc-card h3 {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 16px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-  }
+  .info-card { background: #fff; border: 1px solid var(--border-soft); border-radius: 16px; margin-top: 12px; overflow: hidden; box-shadow: var(--shadow-card); }
+  .info-head { display: flex; align-items: center; justify-content: space-between; padding: 15px 16px; cursor: pointer; gap: 10px; }
+  .info-head-left { display: flex; align-items: center; gap: 11px; }
+  .info-head-ico { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex: none; }
+  .info-head-ico .ms { font-size: 20px; }
+  .info-title { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .info-count { font-size: 12px; color: var(--muted-faint); font-weight: 600; margin-top: 1px; }
+  .info-chev { font-size: 22px; color: #C2CCD4; transition: transform .2s; }
+  .info-chev.open { transform: rotate(180deg); }
+  .info-body { border-top: 1px solid var(--border-faint); }
+  .info-body.collapsed { display: none; }
+  .item-row { display: flex; gap: 11px; align-items: flex-start; padding: 12px 16px; border-bottom: 1px solid var(--border-faint); font-size: 13.5px; line-height: 1.5; color: #2B3640; }
+  .item-row:last-child { border-bottom: none; }
+  .item-row .ms { font-size: 18px; flex: none; margin-top: 1px; }
+  .item-row a { color: var(--carolina-deep); font-weight: 600; text-decoration: none; }
+  .item-row a:active { text-decoration: underline; }
 
-  .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-bottom: 12px; }
-  .form-row { display: flex; flex-direction: column; gap: 5px; }
-  .form-row label { font-size: 12px; font-weight: 500; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.03em; }
-  .form-row input, .form-row select {
-    padding: 9px 11px;
-    font-size: 14px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: var(--bg-secondary);
-    color: var(--text);
-    width: 100%;
-    transition: border-color 0.15s, box-shadow 0.15s;
-    outline: none;
-  }
-  .form-row input:focus, .form-row select:focus {
-    border-color: var(--unc-blue);
-    box-shadow: 0 0 0 3px rgba(75,156,211,0.15);
-    background: var(--bg-white);
-  }
-  .form-check {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    color: var(--text);
-    margin-bottom: 8px;
-    cursor: pointer;
-  }
-  .form-check input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--unc-blue); }
+  /* Severity tints */
+  .sev-critical .info-head-ico { background: var(--critical-bg); } .sev-critical .info-head-ico .ms { color: var(--critical); }
+  .sev-critical .item-row .ms { color: var(--critical); }
+  .sev-info .info-head-ico { background: var(--sky); } .sev-info .info-head-ico .ms { color: var(--carolina-deep); }
+  .sev-info .item-row .ms { color: var(--carolina-deep); }
+  .sev-success .info-head-ico { background: var(--normal-bg); } .sev-success .info-head-ico .ms { color: var(--normal); }
+  .sev-success .item-row .ms { color: var(--normal); }
 
-  .result-box { border-radius: var(--radius-sm); padding: 14px 16px; margin-top: 14px; }
-  .result-blue { background: var(--info-bg); border: 1px solid #bfdbfe; }
-  .result-green { background: var(--success-bg); border: 1px solid #bbf7d0; }
-  .result-purple { background: var(--purple-bg); border: 1px solid #ddd6fe; }
-  .result-red { background: var(--danger-bg); border: 1px solid #fecaca; }
-  .result-row { font-size: 14px; color: var(--text); margin-bottom: 6px; }
-  .result-note { font-size: 12px; color: var(--text-secondary); margin-top: 8px; font-style: italic; border-top: 1px solid rgba(0,0,0,0.06); padding-top: 8px; }
+  .fallback-note { display: flex; align-items: center; gap: 8px; background: var(--caution-bg); border: 1px solid #EBD9AE; border-radius: 12px; padding: 10px 13px; font-size: 12.5px; color: #7A5B12; margin-bottom: 4px; }
+  .fallback-note .ms { font-size: 18px; }
 
-  .refs {
-    margin-top: 6px;
-    padding: 10px 14px;
-    font-size: 12px;
-    color: var(--text-secondary);
-    border-left: 3px solid var(--unc-blue);
-    background: var(--bg-white);
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  }
+  /* ── Calculators ── */
+  .calc-list-card { background: #fff; border: 1px solid var(--border-soft); border-radius: 16px; overflow: hidden; margin-top: 12px; }
+  .calc-group-label { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-soft); font-weight: 700; margin: 20px 2px 2px; }
+  .calc-row { display: flex; align-items: center; gap: 13px; padding: 14px; border-bottom: 1px solid var(--border-faint); cursor: pointer; width: 100%; text-align: left; }
+  .calc-row:last-child { border-bottom: none; }
+  .calc-row-ico { width: 40px; height: 40px; border-radius: 11px; background: var(--sky); display: flex; align-items: center; justify-content: center; flex: none; }
+  .calc-row-ico .ms { font-size: 22px; color: var(--carolina-deep); }
+  .calc-row-title { font-size: 14.5px; font-weight: 700; color: var(--ink); }
+  .calc-row-sub { font-size: 12px; color: #7A8893; margin-top: 1px; }
+  .calc-row .chev { font-size: 20px; color: #C2CCD4; }
+
+  .input-card { background: #fff; border: 1px solid var(--border-soft); border-radius: 16px; padding: 4px 16px; box-shadow: var(--shadow-card); }
+  .input-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border-faint); gap: 12px; }
+  .input-row:last-child { border-bottom: none; }
+  .input-label { font-size: 14.5px; font-weight: 600; color: var(--ink); }
+  .input-sub { font-size: 12px; color: var(--muted-faint); margin-top: 1px; }
+  .input-field { display: flex; align-items: center; gap: 8px; }
+  .input-field input, .input-field select { width: 92px; text-align: right; font-size: 17px; font-weight: 700; color: var(--navy); border: 1px solid #DCE2E7; border-radius: 10px; padding: 8px 10px; font-family: inherit; outline: none; background: #fff; }
+  .input-field select { text-align: left; font-size: 14px; width: 120px; }
+  .input-field .unit { font-size: 12px; color: var(--muted-faint); width: 46px; }
+  .input-toggle { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
+  .switch { position: relative; width: 44px; height: 26px; flex: none; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .track { position: absolute; inset: 0; background: #CBD5DD; border-radius: 20px; transition: .2s; }
+  .switch .track::before { content: ""; position: absolute; width: 20px; height: 20px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: .2s; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+  .switch input:checked + .track { background: var(--carolina); }
+  .switch input:checked + .track::before { transform: translateX(18px); }
+
+  .result-card { background: #fff; border: 1px solid var(--border-soft); border-radius: 16px; padding: 18px; box-shadow: var(--shadow-card); margin-top: 14px; }
+  .result-hero { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+  .result-big { font-size: 40px; font-weight: 700; color: var(--navy); line-height: 1; font-variant-numeric: tabular-nums; }
+  .result-big .u { font-size: 15px; color: var(--muted-faint); font-weight: 600; }
+  .result-badge { padding: 6px 13px; border-radius: 20px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+  .result-grid { display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+  .result-tile { flex: 1; min-width: 120px; background: var(--surface-2); border-radius: 12px; padding: 12px 14px; }
+  .result-tile-label { font-size: 11px; color: var(--muted-soft); font-weight: 600; }
+  .result-tile-val { font-size: 22px; font-weight: 700; color: var(--navy); margin-top: 3px; font-variant-numeric: tabular-nums; }
+  .result-note { display: flex; align-items: flex-start; gap: 9px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-faint); font-size: 13px; line-height: 1.45; color: var(--muted); }
+  .result-note .ms { font-size: 18px; color: var(--carolina-deep); flex: none; margin-top: 1px; }
+  .formula-note { font-size: 12px; line-height: 1.55; color: var(--muted-soft); margin: 14px 4px 4px; }
 
   /* ── Duty hours ── */
-  .duty-layout { width: 100%; padding: 24px; background: var(--bg); }
-  .duty-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 860px; }
+  .duty-hero-active { background: var(--navy); border-radius: 20px; padding: 22px 20px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 10px 28px rgba(19,41,75,.28); }
+  .duty-hero-active .top { align-self: stretch; display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .duty-hero-active .on { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #fff; }
+  .duty-hero-active .on .dot { width: 8px; height: 8px; border-radius: 50%; background: #8FE3B0; box-shadow: 0 0 0 4px rgba(143,227,176,.22); }
+  .duty-since { font-size: 12px; color: #9DB4D0; font-weight: 600; }
+  .duty-elapsed { font-size: 52px; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; line-height: 1; }
+  .duty-elapsed-label { font-size: 11px; color: #7FB6DD; font-weight: 700; margin-top: 9px; letter-spacing: .12em; text-transform: uppercase; }
+  .btn-out { margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 9px; background: #fff; border-radius: 16px; padding: 15px 0; width: 100%; }
+  .btn-out .ms { font-size: 22px; color: var(--critical); }
+  .btn-out span { font-size: 16px; font-weight: 700; color: var(--navy); }
 
-  .duty-card {
-    background: var(--bg-white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 22px;
-    box-shadow: var(--shadow);
-  }
-  .duty-card h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 16px; }
+  .duty-hero-idle { background: #fff; border: 1px solid var(--border-soft); border-radius: 20px; padding: 20px 20px 22px; box-shadow: var(--shadow-card); display: flex; flex-direction: column; align-items: center; }
+  .duty-hero-idle .top { align-self: stretch; display: flex; align-items: center; justify-content: space-between; }
+  .duty-hero-idle .off { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--muted-soft); }
+  .duty-hero-idle .off .dot { width: 8px; height: 8px; border-radius: 50%; background: #C2CCD4; }
+  .duty-last { font-size: 12px; color: var(--muted-faint); font-weight: 600; }
+  .clockin-btn { width: 168px; height: 168px; border-radius: 50%; background: var(--carolina); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; box-shadow: 0 10px 26px rgba(75,156,211,.38); margin: 18px 0 12px; transition: transform .12s; }
+  .clockin-btn:active { transform: scale(.97); }
+  .clockin-btn .ms { font-size: 46px; color: #fff; }
+  .clockin-btn span { font-size: 18px; font-weight: 700; color: #fff; }
+  .clockin-hint { font-size: 13px; color: var(--muted-faint); }
 
-  .clock-time-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); text-align: center; text-transform: uppercase; letter-spacing: 0.05em; }
-  .clock-display { font-size: 48px; font-weight: 300; color: var(--text); font-variant-numeric: tabular-nums; text-align: center; margin: 8px 0 4px; letter-spacing: -1px; }
-  .clock-status { font-size: 13px; color: var(--text-secondary); text-align: center; margin-bottom: 4px; }
-  .clock-sub { font-size: 12px; color: var(--unc-blue); text-align: center; margin-bottom: 18px; min-height: 20px; }
+  .week-card { margin-top: 16px; background: #fff; border: 1px solid var(--border-soft); border-radius: 18px; padding: 18px; box-shadow: var(--shadow-card); }
+  .week-top { display: flex; align-items: center; justify-content: space-between; }
+  .week-range { font-size: 12px; color: var(--muted-faint); font-weight: 600; }
+  .week-total { display: flex; align-items: flex-end; gap: 14px; margin-top: 10px; }
+  .week-total-big { font-size: 34px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; line-height: 1; }
+  .week-shifts { font-size: 13px; color: #7A8893; font-weight: 600; padding-bottom: 3px; }
+  .btn-copy { margin-top: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid #BFD9EC; border-radius: 12px; padding: 11px 0; color: var(--carolina-deep); width: 100%; transition: background .12s; }
+  .btn-copy:active { background: var(--sky); }
+  .btn-copy .ms { font-size: 19px; }
+  .btn-copy span { font-size: 14px; font-weight: 700; }
 
-  .btn-clock {
-    width: 100%;
-    padding: 13px;
-    border-radius: var(--radius);
-    border: none;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: opacity 0.15s, transform 0.1s;
-    letter-spacing: 0.01em;
-  }
-  .btn-clock:active { transform: scale(0.98); }
-  .btn-in { background: #16a34a; color: #fff; }
-  .btn-in:hover { background: #15803d; }
-  .btn-out { background: #dc2626; color: #fff; }
-  .btn-out:hover { background: #b91c1c; }
+  .log-head { display: flex; align-items: center; justify-content: space-between; margin: 24px 2px 10px; }
+  .log-head-title { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted-soft); font-weight: 700; }
+  .shift-row { display: flex; align-items: center; gap: 12px; padding: 13px 14px; border-bottom: 1px solid var(--border-faint); width: 100%; text-align: left; }
+  .shift-row:last-child { border-bottom: none; }
+  .shift-ico { width: 36px; height: 36px; border-radius: 10px; background: var(--sky); display: flex; align-items: center; justify-content: center; flex: none; }
+  .shift-ico .ms { font-size: 19px; color: var(--carolina-deep); }
+  .shift-day { font-size: 14px; font-weight: 700; color: var(--ink); }
+  .shift-time { font-size: 12px; color: #7A8893; margin-top: 1px; }
+  .shift-dur { font-size: 14px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+  .empty-shifts { text-align: center; font-size: 13px; color: var(--muted-faint); padding: 26px 0; }
 
-  .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
-  .stat-card { background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 14px 12px; text-align: center; }
-  .stat-val { font-size: 24px; font-weight: 600; color: var(--text); }
-  .stat-lbl { font-size: 11px; color: var(--text-muted); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.05em; }
+  /* Edit sheet */
+  .sheet-backdrop { position: fixed; inset: 0; background: rgba(16,32,43,.4); display: none; align-items: flex-end; justify-content: center; z-index: 200; }
+  .sheet-backdrop.open { display: flex; }
+  .sheet { background: #fff; width: 100%; max-width: 480px; border-radius: 22px 22px 0 0; padding: 22px 20px calc(22px + env(safe-area-inset-bottom)); }
+  .sheet-title { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .sheet-sub { font-size: 13px; color: var(--muted-soft); margin-bottom: 18px; }
+  .sheet-field { display: flex; align-items: center; justify-content: space-between; padding: 13px 0; border-bottom: 1px solid var(--border-faint); }
+  .sheet-field label { font-size: 14px; font-weight: 600; color: var(--ink); }
+  .sheet-field input { font-size: 15px; font-weight: 600; color: var(--navy); border: 1px solid #DCE2E7; border-radius: 10px; padding: 9px 11px; font-family: inherit; outline: none; }
+  .sheet-actions { display: flex; gap: 10px; margin-top: 20px; }
+  .sheet-btn { flex: 1; padding: 13px; border-radius: 12px; font-size: 14px; font-weight: 700; text-align: center; }
+  .sheet-btn.save { background: var(--carolina); color: #fff; }
+  .sheet-btn.del { background: var(--critical-bg); color: var(--critical); }
+  .sheet-btn.cancel { background: var(--surface); color: var(--muted); }
 
-  .log-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-  .log-header span { font-size: 15px; font-weight: 600; color: var(--text); }
-  .btn-clear { font-size: 12px; color: var(--danger); background: none; border: none; cursor: pointer; padding: 4px 8px; border-radius: var(--radius-sm); }
-  .btn-clear:hover { background: var(--danger-bg); }
+  /* ── Bottom nav ── */
+  .tabbar { position: absolute; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #E8ECEF; display: flex; padding: 8px 6px; padding-bottom: calc(8px + env(safe-area-inset-bottom)); z-index: 100; }
+  .tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .tab .ms { font-size: 24px; color: #97A3AD; }
+  .tab span { font-size: 10.5px; font-weight: 600; color: #97A3AD; }
+  .tab.active .ms { color: var(--carolina); }
+  .tab.active span { color: var(--carolina); font-weight: 700; }
 
-  .log-entry {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 11px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-  }
-  .log-entry:last-child { border-bottom: none; }
-  .log-date { font-weight: 500; color: var(--text); }
-  .log-detail { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
-  .log-hours { font-weight: 600; color: var(--unc-blue); font-size: 14px; }
-  .empty-log { text-align: center; font-size: 13px; color: var(--text-muted); padding: 28px 0; }
-  .log-scroll { max-height: 420px; overflow-y: auto; }
-
-  /* ── Responsive ── */
-  @media (max-width: 680px) {
-    .rot-sidebar, .calc-sidebar { width: 120px; }
-    .rot-sidebar-btn, .calc-sidebar-btn { font-size: 12px; padding: 9px 10px; }
-    .rot-main, .calc-main { padding: 14px; }
-    .top-nav-btn span { display: none; }
-    .top-nav-btn i { font-size: 22px; }
-    .clock-display { font-size: 38px; }
-    .duty-layout { padding: 14px; }
-  }
-  @media (max-width: 480px) {
-    .rot-sidebar, .calc-sidebar { width: 90px; }
-    .rot-sidebar-btn, .calc-sidebar-btn { font-size: 11px; padding: 8px 8px; }
-  }
+  .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: var(--navy); color: #fff; font-size: 13px; font-weight: 600; padding: 11px 18px; border-radius: 12px; opacity: 0; transition: opacity .25s; pointer-events: none; z-index: 300; }
+  .toast.show { opacity: 1; }
 </style>
 </head>
 <body>
+<div class="app-frame">
 
-<div class="app-header">
-  <i class="ti ti-droplet-half-2"></i>
-  <div>
-    <div class="app-header-title">UNC Nephrology Fellowship</div>
-    <div class="app-header-sub">Clinical companion</div>
-  </div>
-</div>
-
-<div class="top-nav">
-  <button class="top-nav-btn active" onclick="switchSection('rotations', this)">
-    <i class="ti ti-layout-sidebar"></i><span>Rotations</span>
-  </button>
-  <button class="top-nav-btn" onclick="switchSection('calculators', this)">
-    <i class="ti ti-calculator"></i><span>Calculators</span>
-  </button>
-  <button class="top-nav-btn" onclick="switchSection('duty', this)">
-    <i class="ti ti-clock-hour-4"></i><span>Duty hours</span>
-  </button>
-</div>
-
-<!-- ═══════════ ROTATIONS ═══════════ -->
-<div id="sec-rotations" class="section active rot-layout">
-  <div class="rot-sidebar" id="rotSidebar">
-    <button class="rot-sidebar-btn active" data-rot="icu">ICU / CRRT</button>
-    <button class="rot-sidebar-btn" data-rot="floor">Consult / Floor</button>
-    <button class="rot-sidebar-btn" data-rot="transplant">Transplant</button>
-    <button class="rot-sidebar-btn" data-rot="biopsy">Biopsy</button>
-    <button class="rot-sidebar-btn" data-rot="clinic">Outpatient</button>
-    <button class="rot-sidebar-btn" data-rot="hd">HD / PD</button>
-    <button class="rot-sidebar-btn" data-rot="home">Home therapies</button>
-  </div>
-  <div class="rot-main" id="rotMain"></div>
-</div>
-
-<!-- ═══════════ CALCULATORS ═══════════ -->
-<div id="sec-calculators" class="section calc-layout">
-  <div class="calc-sidebar">
-    <button class="calc-sidebar-btn active" data-calc="electrolytes">Electrolytes</button>
-    <button class="calc-sidebar-btn" data-calc="acidbase">Acid-base</button>
-    <button class="calc-sidebar-btn" data-calc="dialysis">Dialysis</button>
-    <button class="calc-sidebar-btn" data-calc="general">General</button>
-  </div>
-  <div class="calc-main">
-
-    <!-- Electrolytes -->
-    <div id="calc-electrolytes" class="calc-pane active">
-      <div class="calc-card">
-        <h3>Free water deficit</h3>
-        <div class="form-grid">
-          <div class="form-row"><label>Weight (kg)</label><input type="number" id="fwd-wt" placeholder="70"></div>
-          <div class="form-row"><label>Serum Na (mEq/L)</label><input type="number" id="fwd-na" placeholder="155"></div>
-          <div class="form-row"><label>Sex</label><select id="fwd-sex"><option value="male">Male</option><option value="female">Female</option></select></div>
+  <!-- ══════════ HOME ══════════ -->
+  <div id="screen-home" class="screen active">
+    <div class="hdr">
+      <div class="hdr-top">
+        <div>
+          <div class="hdr-kicker">UNC Kidney Center</div>
+          <div class="hdr-title">Fellows</div>
         </div>
-        <label class="form-check"><input type="checkbox" id="fwd-elderly"> Elderly (65+) — reduced TBW</label>
-        <div id="fwd-result"></div>
+        <div class="hdr-avatar" id="homeInitials">NF</div>
       </div>
-      <div class="calc-card">
-        <h3>Electrolyte free water clearance</h3>
-        <div class="form-grid">
-          <div class="form-row"><label>Urine volume (L/day)</label><input type="number" id="efwc-vol" placeholder="2"></div>
-          <div class="form-row"><label>Urine Na (mEq/L)</label><input type="number" id="efwc-una" placeholder="50"></div>
-          <div class="form-row"><label>Urine K (mEq/L)</label><input type="number" id="efwc-uk" placeholder="20"></div>
-          <div class="form-row"><label>Serum Na (mEq/L)</label><input type="number" id="efwc-sna" placeholder="140"></div>
-        </div>
-        <div id="efwc-result"></div>
-      </div>
-      <div class="calc-card">
-        <h3>Osmolar free water clearance</h3>
-        <div class="form-grid">
-          <div class="form-row"><label>Urine volume (L/day)</label><input type="number" id="ofwc-vol" placeholder="2"></div>
-          <div class="form-row"><label>Urine Osm (mOsm/kg)</label><input type="number" id="ofwc-uosm" placeholder="300"></div>
-          <div class="form-row"><label>Serum Osm (mOsm/kg)</label><input type="number" id="ofwc-sosm" placeholder="290"></div>
-        </div>
-        <div id="ofwc-result"></div>
+      <div class="hdr-greet">
+        <div class="hdr-greet-sm" id="homeGreetTime">Welcome,</div>
+        <div class="hdr-greet-lg" id="homeName">Nephrology Fellow</div>
+        <div class="hdr-chip"><span class="dot"></span><span id="homeStatus">On service</span></div>
       </div>
     </div>
+    <div class="body scroll-y">
+      <div class="search">
+        <span class="ms">search</span>
+        <span class="ph">Search tools, numbers, protocols</span>
+      </div>
 
-    <!-- Acid-base -->
-    <div id="calc-acidbase" class="calc-pane">
-      <div class="calc-card">
-        <h3>Winter's formula</h3>
-        <div class="form-grid" style="max-width:340px">
-          <div class="form-row"><label>Serum HCO₃ (mEq/L)</label><input type="number" id="win-hco3" placeholder="12"></div>
-        </div>
-        <div id="win-result"></div>
+      <div class="cat-grid">
+        <button class="cat-card" onclick="go('rotations')">
+          <div class="cat-ico"><span class="ms">menu_book</span></div>
+          <div><div class="cat-label">Rotations</div><div class="cat-sub">Quick reference</div></div>
+        </button>
+        <button class="cat-card" onclick="go('calculators')">
+          <div class="cat-ico"><span class="ms">calculate</span></div>
+          <div><div class="cat-label">Calculators</div><div class="cat-sub">7 tools</div></div>
+        </button>
+        <button class="cat-card" onclick="go('duty')">
+          <div class="cat-ico"><span class="ms">schedule</span></div>
+          <div><div class="cat-label">Duty Hours</div><div class="cat-sub">Clock in / out</div></div>
+        </button>
+        <button class="cat-card" onclick="go('rotations')">
+          <div class="cat-ico"><span class="ms">call</span></div>
+          <div><div class="cat-label">Directory</div><div class="cat-sub">Contacts by rotation</div></div>
+        </button>
       </div>
-      <div class="calc-card">
-        <h3>Delta-delta gap</h3>
-        <div class="form-grid">
-          <div class="form-row"><label>Anion gap</label><input type="number" id="dd-ag" placeholder="20"></div>
-          <div class="form-row"><label>Serum HCO₃ (mEq/L)</label><input type="number" id="dd-hco3" placeholder="12"></div>
-        </div>
-        <div id="dd-result"></div>
-      </div>
-      <div class="calc-card">
-        <h3>Urine osmolar gap</h3>
-        <div class="form-grid">
-          <div class="form-row"><label>Urine Osm (mOsm/kg)</label><input type="number" id="uog-uosm" placeholder="400"></div>
-          <div class="form-row"><label>Urine Na (mEq/L)</label><input type="number" id="uog-una" placeholder="50"></div>
-          <div class="form-row"><label>Urine K (mEq/L)</label><input type="number" id="uog-uk" placeholder="20"></div>
-          <div class="form-row"><label>Urine BUN (mg/dL, optional)</label><input type="number" id="uog-bun" placeholder="0"></div>
-        </div>
-        <div id="uog-result"></div>
-      </div>
-    </div>
 
-    <!-- Dialysis -->
-    <div id="calc-dialysis" class="calc-pane">
-      <div class="calc-card">
-        <h3>CRRT hyponatremia correction</h3>
-        <div class="form-grid">
-          <div class="form-row"><label>Patient Na (mEq/L)</label><input type="number" id="crrt-pna" placeholder="112"></div>
-          <div class="form-row"><label>Target Na (mEq/L)</label><input type="number" id="crrt-tna" placeholder="115"></div>
-          <div class="form-row"><label>RF rate (mL/hr)</label><input type="number" id="crrt-rf" placeholder="1400"></div>
-          <div class="form-row"><label>Solution Na (mEq/L)</label><input type="number" id="crrt-sna" placeholder="140"></div>
+      <div style="margin-top:22px;">
+        <div class="sec-label">Quick access</div>
+        <div class="qa-row scroll-x">
+          <button class="qa-chip" onclick="go('duty')"><span class="ms">bolt</span>Clock in</button>
+          <button class="qa-chip" onclick="openRotation('icu')"><span class="ms">water_drop</span>CRRT</button>
+          <button class="qa-chip" onclick="openCalc('crrt')"><span class="ms">medication</span>CRRT Na</button>
+          <button class="qa-chip" onclick="openRotation('transplant')"><span class="ms">health_and_safety</span>Transplant</button>
         </div>
-        <div id="crrt-result"></div>
       </div>
-      <div class="calc-card">
-        <h3>Kidney failure risk equation (KFRE)</h3>
-        <div class="form-grid">
-          <div class="form-row"><label>Age (yr)</label><input type="number" id="kfre-age" placeholder="65"></div>
-          <div class="form-row"><label>Sex</label><select id="kfre-sex"><option value="female">Female</option><option value="male">Male</option></select></div>
-          <div class="form-row"><label>eGFR (mL/min/1.73m²)</label><input type="number" id="kfre-egfr" placeholder="30"></div>
-          <div class="form-row"><label>Urine ACR (mg/g)</label><input type="number" id="kfre-acr" placeholder="200"></div>
-          <div class="form-row"><label>Region</label><select id="kfre-region"><option value="northamerica">North America</option><option value="other">Other</option></select></div>
-        </div>
-        <div id="kfre-result"></div>
-      </div>
-      <div class="refs"><strong>References:</strong> CRRT Na correction: Teixeira JP et al., AJKD 2025. &nbsp; KFRE: Tangri N et al., JAMA 2011.</div>
-    </div>
 
-    <!-- General -->
-    <div id="calc-general" class="calc-pane">
-      <div class="calc-card">
-        <h3>PREVENT cardiovascular risk</h3>
-        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px">AHA 10-yr and 30-yr CVD risk including kidney function (eGFR + ACR)</p>
-        <div class="form-grid">
-          <div class="form-row"><label>Age (yr)</label><input type="number" id="prev-age" placeholder="55"></div>
-          <div class="form-row"><label>Sex</label><select id="prev-sex"><option value="male">Male</option><option value="female">Female</option></select></div>
-          <div class="form-row"><label>Systolic BP (mmHg)</label><input type="number" id="prev-sbp" placeholder="130"></div>
-          <div class="form-row"><label>Total cholesterol (mg/dL)</label><input type="number" id="prev-tc" placeholder="200"></div>
-          <div class="form-row"><label>HDL (mg/dL)</label><input type="number" id="prev-hdl" placeholder="50"></div>
-          <div class="form-row"><label>eGFR</label><input type="number" id="prev-egfr" placeholder="60"></div>
-          <div class="form-row"><label>Urine ACR (mg/g)</label><input type="number" id="prev-acr" placeholder="30"></div>
-        </div>
-        <label class="form-check"><input type="checkbox" id="prev-bpmeds"> On blood pressure medication</label>
-        <label class="form-check"><input type="checkbox" id="prev-statin"> On statin therapy</label>
-        <label class="form-check"><input type="checkbox" id="prev-dm"> Diabetes</label>
-        <label class="form-check"><input type="checkbox" id="prev-smoke"> Current smoker</label>
-        <div id="prev-result"></div>
-      </div>
-      <div class="refs"><strong>Reference:</strong> PREVENT: Khan SS et al., Circulation 2024.</div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ═══════════ DUTY HOURS ═══════════ -->
-<div id="sec-duty" class="section">
-  <div class="duty-layout">
-    <div class="duty-grid">
-      <div class="duty-card">
-        <div class="clock-time-label">Current time</div>
-        <div class="clock-display" id="liveClock">--:--:--</div>
-        <div class="clock-status" id="clockStatus">Not clocked in</div>
-        <div class="clock-sub" id="clockSub">&nbsp;</div>
-        <button class="btn-clock btn-in" id="clockBtn" onclick="toggleClock()">Clock in</button>
-        <div class="stats-row">
-          <div class="stat-card"><div class="stat-val" id="statToday">0h 0m</div><div class="stat-lbl">Today</div></div>
-          <div class="stat-card"><div class="stat-val" id="statWeek">0h 0m</div><div class="stat-lbl">This week</div></div>
-        </div>
-      </div>
-      <div class="duty-card">
-        <div class="log-header">
-          <span>Shift log</span>
-          <button class="btn-clear" onclick="clearLog()">Clear all</button>
-        </div>
-        <div class="log-scroll" id="logEntries">
-          <div class="empty-log">No shifts logged yet</div>
+      <div style="margin-top:22px;">
+        <div class="sec-label">Jump back in</div>
+        <div class="list-card">
+          <button class="list-row" onclick="openCalc('dd')"><div class="list-row-ico"><span class="ms">calculate</span></div><div class="list-row-label">Anion Gap &amp; &Delta;/&Delta;</div><span class="ms chev">chevron_right</span></button>
+          <button class="list-row" onclick="openCalc('fwd')"><div class="list-row-ico"><span class="ms">water_drop</span></div><div class="list-row-label">Free Water Deficit</div><span class="ms chev">chevron_right</span></button>
+          <button class="list-row" onclick="openRotation('biopsy')"><div class="list-row-ico"><span class="ms">colorize</span></div><div class="list-row-label">Biopsy rotation</div><span class="ms chev">chevron_right</span></button>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- ══════════ ROTATIONS ══════════ -->
+  <div id="screen-rotations" class="screen">
+    <div class="subhdr">
+      <span class="ms back" onclick="go('home')">arrow_back_ios_new</span>
+      <div><div class="subhdr-title">Rotations</div><div class="subhdr-sub">Quick reference</div></div>
+    </div>
+    <div class="body scroll-y">
+      <div class="rot-chips scroll-x" id="rotChips"></div>
+      <div id="rotContent"></div>
+    </div>
+  </div>
+
+  <!-- ══════════ CALCULATORS (list) ══════════ -->
+  <div id="screen-calculators" class="screen">
+    <div class="subhdr">
+      <span class="ms back" onclick="go('home')">arrow_back_ios_new</span>
+      <div><div class="subhdr-title">Calculators</div><div class="subhdr-sub">7 tools</div></div>
+    </div>
+    <div class="body scroll-y" id="calcList"></div>
+  </div>
+
+  <!-- ══════════ CALCULATOR DETAIL ══════════ -->
+  <div id="screen-calc-detail" class="screen">
+    <div class="subhdr">
+      <span class="ms back" onclick="go('calculators')">arrow_back_ios_new</span>
+      <div><div class="subhdr-title" id="calcTitle">Calculator</div><div class="subhdr-sub">Calculators</div></div>
+    </div>
+    <div class="body scroll-y" id="calcDetail"></div>
+  </div>
+
+  <!-- ══════════ DUTY HOURS ══════════ -->
+  <div id="screen-duty" class="screen">
+    <div class="subhdr">
+      <span class="ms back" onclick="go('home')">arrow_back_ios_new</span>
+      <div><div class="subhdr-title">Duty Hours</div><div class="subhdr-sub">Tracker</div></div>
+    </div>
+    <div class="body scroll-y">
+      <div id="dutyHero"></div>
+      <div class="week-card">
+        <div class="week-top">
+          <div class="sec-label" style="margin:0;">This week</div>
+          <div class="week-range" id="weekRange"></div>
+        </div>
+        <div class="week-total">
+          <div class="week-total-big" id="weekTotal">0h 0m</div>
+          <div class="week-shifts" id="weekShifts">No shifts yet</div>
+        </div>
+        <button class="btn-copy" onclick="copyWeek()"><span class="ms">content_copy</span><span id="copyLabel">Copy weekly summary</span></button>
+      </div>
+      <div class="log-head">
+        <div class="log-head-title">Shift log</div>
+        <button style="font-size:12px;color:var(--critical);font-weight:600;" onclick="clearShifts()">Clear all</button>
+      </div>
+      <div class="list-card" id="shiftLog"></div>
+    </div>
+  </div>
+
+  <!-- ══════════ TAB BAR ══════════ -->
+  <div class="tabbar">
+    <button class="tab active" id="tab-home" onclick="go('home')"><span class="ms">home</span><span>Home</span></button>
+    <button class="tab" id="tab-rotations" onclick="go('rotations')"><span class="ms">menu_book</span><span>Rotations</span></button>
+    <button class="tab" id="tab-calculators" onclick="go('calculators')"><span class="ms">calculate</span><span>Tools</span></button>
+    <button class="tab" id="tab-duty" onclick="go('duty')"><span class="ms">schedule</span><span>Duty</span></button>
+  </div>
 </div>
+
+<!-- Edit shift sheet -->
+<div class="sheet-backdrop" id="editSheet">
+  <div class="sheet">
+    <div class="sheet-title">Edit shift</div>
+    <div class="sheet-sub" id="editSheetDate"></div>
+    <div class="sheet-field"><label>Clock in</label><input type="time" id="editIn"></div>
+    <div class="sheet-field"><label>Clock out</label><input type="time" id="editOut"></div>
+    <div class="sheet-actions">
+      <button class="sheet-btn del" onclick="deleteShift()">Delete</button>
+      <button class="sheet-btn cancel" onclick="closeSheet()">Cancel</button>
+      <button class="sheet-btn save" onclick="saveShift()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
-const ROTATIONS = {
-  icu: { label: 'ICU / CRRT', cards: [
-    { icon: 'ti-alert-triangle', color: 'red', title: 'Critical reminders', items: [
-      { cls: 'alert-red', text: 'Max Na correction: 6–8 mEq/L/24h chronic hyponatremia; 4–6 mEq/L/24h if ODS risk' },
-      { cls: 'alert-red', text: 'Overcorrection: give D5W ± DDAVP to relower Na if overshoot occurs' },
-      { cls: 'alert-red', text: 'Citrate CRRT: monitor ionized Ca post-filter (target 1.0–1.2 mmol/L), not total Ca' },
-      { cls: 'alert-red', text: 'AKI hyperphosphatemia: optimize CRRT dose before adding phosphate binders' }
-    ]},
-    { icon: 'ti-clipboard-list', color: 'blue', title: 'Quick reference', items: [
-      { cls: 'alert-blue', text: 'CRRT dose: prescribe 25–30 mL/kg/hr to achieve delivered 20–25 mL/kg/hr' },
-      { cls: 'alert-blue', text: 'KDIGO AKI stage 1: Cr ×1.5–1.9 baseline, or +0.3 mg/dL within 48h, or UO <0.5 mL/kg/hr ×6h' },
-      { cls: 'alert-blue', text: 'RRT initiation: refractory volume overload, electrolyte disturbance, acidosis, or uremic emergency' },
-      { cls: 'alert-blue', text: 'Use CRRT Na calculator (Calculators tab) for hyponatremia correction on CVVHDF' }
-    ]},
-    { icon: 'ti-link', color: 'green', title: 'Resources', items: [
-      { cls: 'alert-green', text: 'KDIGO AKI Guidelines 2012', link: 'https://kdigo.org/guidelines/acute-kidney-injury/' },
-      { cls: 'alert-green', text: 'UNC CRRT Protocol (add SharePoint link)', link: '#' },
-      { cls: 'alert-green', text: 'Teixeira: CRRT hyponatremia correction (AJKD 2025)', link: 'https://www.ajkd.org' }
-    ]}
-  ]},
-  floor: { label: 'Consult / Floor', cards: [
-    { icon: 'ti-alert-triangle', color: 'red', title: 'Critical reminders', items: [
-      { cls: 'alert-red', text: 'Nephrology is a consultant — primary team is responsible for code status and disposition' },
-      { cls: 'alert-red', text: 'Contrast: hold metformin 48h post-contrast if eGFR <60' },
-      { cls: 'alert-red', text: 'NSAIDs: avoid in CKD ≥ stage 3b (AKI risk, hyperkalemia)' },
-      { cls: 'alert-red', text: 'Gadolinium: avoid if eGFR <30 — risk of nephrogenic systemic fibrosis' }
-    ]},
-    { icon: 'ti-clipboard-list', color: 'blue', title: 'Quick reference', items: [
-      { cls: 'alert-blue', text: 'AKI workup: UA with micro, FENa, urine protein/Cr, renal US, medication reconciliation' },
-      { cls: 'alert-blue', text: 'FENa <1% prerenal or contrast; >2% intrinsic. Use FEUrea if on diuretics.' },
-      { cls: 'alert-blue', text: 'Hyperkalemia: ECG first. Peaked T-waves → calcium gluconate before anything else.' },
-      { cls: 'alert-blue', text: 'Urine sediment: RBC casts = GN; WBC casts = pyelo/AIN; granular = ATN' }
-    ]},
-    { icon: 'ti-link', color: 'green', title: 'Resources', items: [
-      { cls: 'alert-green', text: 'KDIGO CKD Guidelines 2024', link: 'https://kdigo.org/guidelines/ckd-evaluation-and-management/' },
-      { cls: 'alert-green', text: 'UNC Consult Template (add SharePoint link)', link: '#' }
-    ]}
-  ]},
-  transplant: { label: 'Transplant', cards: [
-    { icon: 'ti-alert-triangle', color: 'red', title: 'Critical reminders', items: [
-      { cls: 'alert-red', text: 'Tacrolimus: draw level before morning dose. Target varies by protocol and time post-transplant.' },
-      { cls: 'alert-red', text: 'BK viremia >10,000 copies/mL: reduce immunosuppression. Avoid cidofovir routinely.' },
-      { cls: 'alert-red', text: 'DGF: maintain perfusion, avoid nephrotoxins, daily creatinine monitoring' },
-      { cls: 'alert-red', text: 'New hyperkalemia post-transplant: check tacrolimus level, rule out obstruction, evaluate for rejection' }
-    ]},
-    { icon: 'ti-clipboard-list', color: 'blue', title: 'Quick reference', items: [
-      { cls: 'alert-blue', text: 'Rejection: biopsy is gold standard — Banff classification' },
-      { cls: 'alert-blue', text: 'PCP prophylaxis: TMP-SMX preferred; atovaquone if sulfa allergy' },
-      { cls: 'alert-blue', text: 'CMV: D+/R− highest risk. Valganciclovir prophylaxis per UNC protocol.' },
-      { cls: 'alert-blue', text: 'DSA monitoring: 1, 3, 6, 12 months post-transplant per UNC protocol' }
-    ]},
-    { icon: 'ti-link', color: 'green', title: 'Resources', items: [
-      { cls: 'alert-green', text: 'KDIGO Transplant Guidelines', link: 'https://kdigo.org/guidelines/kidney-transplant/' },
-      { cls: 'alert-green', text: 'UNC Transplant Protocols (add SharePoint link)', link: '#' }
-    ]}
-  ]},
-  biopsy: { label: 'Biopsy', cards: [
-    { icon: 'ti-alert-triangle', color: 'red', title: 'Critical reminders', items: [
-      { cls: 'alert-red', text: 'Hold antiplatelets: aspirin and clopidogrel 5–7 days pre-biopsy' },
-      { cls: 'alert-red', text: 'BP target <160/100 day of procedure — delay if not controlled' },
-      { cls: 'alert-red', text: 'Post-biopsy: bedrest 4–6h, vitals q30min ×4, Hgb check in 4–6h' },
-      { cls: 'alert-red', text: 'Gross hematuria with clots or hemodynamic instability → IR/urology emergently' }
-    ]},
-    { icon: 'ti-clipboard-list', color: 'blue', title: 'Quick reference', items: [
-      { cls: 'alert-blue', text: 'Pre-biopsy labs: CBC, PT/INR, PTT, type & screen, Cr, UA' },
-      { cls: 'alert-blue', text: 'DDAVP: 0.3 mcg/kg IV in uremic or high bleeding-risk patients' },
-      { cls: 'alert-blue', text: 'Adequate sample: ≥2 cores with ≥7–10 glomeruli each' },
-      { cls: 'alert-blue', text: 'Tissue handling: fresh → IF (or Zeus media); formalin → LM; glutaraldehyde → EM' }
-    ]},
-    { icon: 'ti-link', color: 'green', title: 'Resources', items: [
-      { cls: 'alert-green', text: 'UNC Biopsy Protocol (add SharePoint link)', link: '#' },
-      { cls: 'alert-green', text: 'UNC Pathology Tissue Handling Guide (add link)', link: '#' }
-    ]}
-  ]},
-  clinic: { label: 'Outpatient', cards: [
-    { icon: 'ti-alert-triangle', color: 'red', title: 'Critical reminders', items: [
-      { cls: 'alert-red', text: 'SGLT2i: hold before surgeries and procedures (euglycemic DKA risk). Restart when eating.' },
-      { cls: 'alert-red', text: 'GLP-1 RA: assess for gastroparesis risk before procedures requiring anesthesia' },
-      { cls: 'alert-red', text: 'Finerenone: check K⁺ within 4 weeks of initiation — hold if >5.0 mEq/L' },
-      { cls: 'alert-red', text: 'Vaccinations: Pneumovax, annual flu, HBV (check titers), Shingrix if immunosuppressed' }
-    ]},
-    { icon: 'ti-clipboard-list', color: 'blue', title: 'Quick reference', items: [
-      { cls: 'alert-blue', text: 'CKD staging: KDIGO 2024 heat map — eGFR + ACR categories' },
-      { cls: 'alert-blue', text: 'BP target: <120/80 if tolerated (SPRINT); proteinuric CKD prioritize RAAS blockade' },
-      { cls: 'alert-blue', text: 'Anemia: iron studies, retic, B12/folate before starting ESA' },
-      { cls: 'alert-blue', text: 'KFRE >10% at 2yr: initiate AV fistula referral and transplant evaluation conversation' }
-    ]},
-    { icon: 'ti-link', color: 'green', title: 'Resources', items: [
-      { cls: 'alert-green', text: 'KDIGO CKD 2024 Guidelines', link: 'https://kdigo.org/guidelines/ckd-evaluation-and-management/' },
-      { cls: 'alert-green', text: 'UNC CKM Clinic Protocol (add link)', link: '#' }
-    ]}
-  ]},
-  hd: { label: 'HD / PD', cards: [
-    { icon: 'ti-alert-triangle', color: 'red', title: 'Critical reminders', items: [
-      { cls: 'alert-red', text: 'Intradialytic hypotension: cool dialysate (35.5°C), reassess dry weight, reduce UF rate' },
-      { cls: 'alert-red', text: 'Tunneled catheter infection: cultures from each lumen + peripheral. Do not pull unless unstable — ID consult.' },
-      { cls: 'alert-red', text: 'PD peritonitis: WBC >100/µL with >50% PMN → empiric IP vancomycin + ceftazidime' },
-      { cls: 'alert-red', text: 'Antibiotic dosing: most agents cleared by HD — dose after session, not before' }
-    ]},
-    { icon: 'ti-clipboard-list', color: 'blue', title: 'Quick reference', items: [
-      { cls: 'alert-blue', text: 'Kt/V targets: ≥1.4 per HD session; weekly ≥1.7 for PD' },
-      { cls: 'alert-blue', text: 'HD adequacy: monthly BUN pre/post, Kt/V, interdialytic weight gain, BP log' },
-      { cls: 'alert-blue', text: 'Heparin-free HD: use post-op, post-biopsy, active bleeding. Saline flushes q30min.' },
-      { cls: 'alert-blue', text: 'Access surveillance: monthly physical exam, quarterly flow measurements per UNC protocol' }
-    ]},
-    { icon: 'ti-link', color: 'green', title: 'Resources', items: [
-      { cls: 'alert-green', text: 'KDOQI HD Adequacy Guidelines', link: 'https://www.kidney.org/professionals/guidelines' },
-      { cls: 'alert-green', text: 'UNC Dialysis Unit Protocols (add link)', link: '#' }
-    ]}
-  ]},
-  home: { label: 'Home therapies', cards: [
-    { icon: 'ti-alert-triangle', color: 'red', title: 'Critical reminders', items: [
-      { cls: 'alert-red', text: 'Exit site infection: S. aureus most common — topical mupirocin prophylaxis reduces risk' },
-      { cls: 'alert-red', text: 'Fibrin sheath on PD catheter: try tPA instillation before declaring catheter failure' },
-      { cls: 'alert-red', text: 'HHD: care partner training must be documented; home visit completed pre-discharge' },
-      { cls: 'alert-red', text: 'Travel: plan supply shipment ≥3–4 weeks in advance' }
-    ]},
-    { icon: 'ti-clipboard-list', color: 'blue', title: 'Quick reference', items: [
-      { cls: 'alert-blue', text: 'APD vs CAPD: APD (cycler) for daytime obligations; CAPD for simpler regimen' },
-      { cls: 'alert-blue', text: 'Transport: fast transporters → APD short dwells; slow → CAPD long dwells' },
-      { cls: 'alert-blue', text: 'HHD: 3–4 sessions/week target; weekly Kt/V ≥3.0 recommended' },
-      { cls: 'alert-blue', text: 'Encapsulating peritoneal sclerosis: rare but life-threatening — risk after >5yr PD or recurrent peritonitis' }
-    ]},
-    { icon: 'ti-link', color: 'green', title: 'Resources', items: [
-      { cls: 'alert-green', text: 'ISPD PD Peritonitis Guidelines 2022', link: 'https://www.ispd.org' },
-      { cls: 'alert-green', text: 'UNC Home Therapies Training Checklist (add link)', link: '#' }
-    ]}
-  ]}
-};
-
-// ── API config ────────────────────────────────────────────────────────────────
+// ═══════════════ CONFIG ═══════════════
 const API_URL = 'https://fellowship-companion-api-ezeitler.apps.cloudapps.unc.edu';
 
-// ── Runtime rotation store (populated from API or fallback) ───────────────────
-let ROTATION_DATA = {};  // keyed by rotation id
-
-const iconColor = { red: 'var(--danger)', blue: 'var(--info)', green: 'var(--success)' };
-let openCards = {};
-
-// Convert API response item to the cls the renderer expects
-function itemCls(color) {
-  return color === 'red' ? 'alert-red' : color === 'green' ? 'alert-green' : 'alert-blue';
-}
-function itemIcon(color) {
-  return color === 'red' ? 'ti-alert-circle' : color === 'green' ? 'ti-external-link' : 'ti-info-circle';
-}
-
-// Normalise a rotation object — works whether it came from the API or the
-// hardcoded ROTATIONS fallback (which uses a slightly different shape).
-function normaliseRotation(rot) {
-  // API shape: { id, label, cards: [{ title, icon, color, items: [{text, link}] }] }
-  // Fallback shape: same but items have a `cls` field instead of being derived from color
-  return {
-    id:    rot.id,
-    label: rot.label,
-    cards: (rot.cards || []).map(card => ({
-      title: card.title,
-      icon:  card.icon  || 'ti-clipboard-list',
-      color: card.color || 'blue',
-      items: (card.items || []).map(item => ({
-        text: item.text,
-        link: item.link || null,
-        cls:  item.cls || itemCls(card.color || 'blue'),
-      }))
-    }))
-  };
+// Map rotation card colors → severity classes + Material icon
+const SEV = {
+  red:   { cls: 'sev-critical', icon: 'priority_high' },
+  blue:  { cls: 'sev-info',     icon: 'info' },
+  green: { cls: 'sev-success',  icon: 'open_in_new' }
+};
+// Card-title → header icon hints
+function headIcon(title, color) {
+  const t = (title || '').toLowerCase();
+  if (t.includes('contact')) return 'call';
+  if (t.includes('medication') || t.includes('med ')) return 'medication';
+  if (t.includes('tissue')) return 'science';
+  if (t.includes('post') || t.includes('complication')) return 'e911_emergency';
+  if (t.includes('consent')) return 'fact_check';
+  if (t.includes('intra') || t.includes('step')) return 'checklist';
+  if (color === 'red') return 'priority_high';
+  if (color === 'green') return 'open_in_new';
+  return 'info';
 }
 
-function renderRotation(key) {
-  const rot = ROTATION_DATA[key]; if (!rot) return;
-  document.getElementById('rotMain').innerHTML = rot.cards.map((card, i) => {
-    const k = key + '-' + i;
-    const open = openCards[k] !== false;
-    const ic = iconColor[card.color] || 'var(--info)';
-    return `<div class="info-card">
-      <div class="info-card-header" onclick="toggleCard('${k}')">
-        <div class="info-card-label">
-          <i class="ti ${card.icon}" style="color:${ic}"></i>
-          <span>${card.title}</span>
+// ═══════════════ NAVIGATION ═══════════════
+const TABS = ['home', 'rotations', 'calculators', 'duty'];
+function go(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const id = screen === 'calc-detail' ? 'screen-calc-detail' : 'screen-' + screen;
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  const tabKey = screen === 'calc-detail' ? 'calculators' : screen;
+  if (TABS.includes(tabKey)) document.getElementById('tab-' + tabKey).classList.add('active');
+  document.querySelectorAll('.body').forEach(b => b.scrollTop = 0);
+}
+
+// ═══════════════ GREETING ═══════════════
+(function greeting() {
+  const h = new Date().getHours();
+  const g = h < 12 ? 'Good morning,' : h < 18 ? 'Good afternoon,' : 'Good evening,';
+  document.getElementById('homeGreetTime').textContent = g;
+})();
+
+// ═══════════════ ROTATIONS ═══════════════
+const FALLBACK_ROTATIONS = {
+  icu: { label: 'ICU / CRRT', cards: [
+    { title: 'Critical reminders', color: 'red', items: [
+      { text: 'Max Na correction: 6–8 mEq/L/24h chronic hyponatremia; 4–6 if ODS risk' },
+      { text: 'Overcorrection: give D5W ± DDAVP to relower Na' },
+      { text: 'Citrate CRRT: monitor ionized Ca post-filter (1.0–1.2 mmol/L)' },
+    ]},
+    { title: 'Quick reference', color: 'blue', items: [
+      { text: 'CRRT dose: prescribe 25–30 mL/kg/hr for delivered 20–25' },
+      { text: 'KDIGO AKI stage 1: Cr ×1.5–1.9 baseline or +0.3 mg/dL in 48h' },
+    ]},
+  ]},
+  floor: { label: 'Consult / Floor', cards: [
+    { title: 'Critical reminders', color: 'red', items: [
+      { text: 'NSAIDs: avoid in CKD ≥ stage 3b (AKI, hyperkalemia)' },
+      { text: 'Gadolinium: avoid if eGFR <30 (NSF risk)' },
+    ]},
+  ]},
+  biopsy: { label: 'Biopsy', cards: [
+    { title: 'Pre-biopsy goals', color: 'red', items: [
+      { text: 'Platelets >50K, Hgb >8, BP <160/100, INR <1.3' },
+    ]},
+  ]},
+};
+
+let ROTATIONS = {};
+let currentRot = null;
+let openState = {};
+let usingFallback = false;
+
+async function loadRotations() {
+  try {
+    const res = await fetch(API_URL + '/rotations', { signal: AbortSignal.timeout(5000) });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    ROTATIONS = {};
+    data.forEach(r => { ROTATIONS[r.id] = { label: r.label, cards: r.cards || [] }; });
+  } catch (e) {
+    console.warn('API unreachable, using fallback:', e.message);
+    ROTATIONS = FALLBACK_ROTATIONS;
+    usingFallback = true;
+  }
+  renderRotChips();
+  const first = Object.keys(ROTATIONS)[0];
+  if (first) selectRotation(first);
+}
+
+function renderRotChips() {
+  document.getElementById('rotChips').innerHTML = Object.entries(ROTATIONS).map(([id, r]) =>
+    `<button class="rot-chip ${id === currentRot ? 'active' : ''}" data-rot="${id}" onclick="selectRotation('${id}')">${r.label}</button>`
+  ).join('');
+}
+
+function selectRotation(id) {
+  currentRot = id;
+  document.querySelectorAll('.rot-chip').forEach(c => c.classList.toggle('active', c.dataset.rot === id));
+  const rot = ROTATIONS[id];
+  const banner = usingFallback ? `<div class="fallback-note"><span class="ms">cloud_off</span>Showing cached content — could not reach the server.</div>` : '';
+  document.getElementById('rotContent').innerHTML = banner + rot.cards.map((card, i) => {
+    const k = id + '-' + i;
+    const open = openState[k] !== false;
+    const sev = SEV[card.color] || SEV.blue;
+    const hi = headIcon(card.title, card.color);
+    return `<div class="info-card ${sev.cls}">
+      <div class="info-head" onclick="toggleInfo('${k}')">
+        <div class="info-head-left">
+          <div class="info-head-ico"><span class="ms">${hi}</span></div>
+          <div><div class="info-title">${card.title}</div><div class="info-count">${card.items.length} item${card.items.length !== 1 ? 's' : ''}</div></div>
         </div>
-        <i class="ti ti-chevron-up chevron ${open ? 'open' : ''}" id="chev-${k}"></i>
+        <span class="ms info-chev ${open ? 'open' : ''}" id="chev-${k}">expand_more</span>
       </div>
-      <div class="info-card-body ${open ? '' : 'collapsed'}" id="card-${k}">
-        ${card.items.map(item => `<div class="alert-item ${item.cls}">
-          <i class="ti ${itemIcon(card.color)}"></i>
-          <span>${item.link && item.link !== '#'
-            ? `<a href="${item.link}" target="_blank">${item.text}</a>`
-            : item.text}</span>
+      <div class="info-body ${open ? '' : 'collapsed'}" id="body-${k}">
+        ${card.items.map(it => `<div class="item-row">
+          <span class="ms">${sev.icon}</span>
+          <span>${it.link && it.link !== '#' ? `<a href="${it.link}" target="_blank" rel="noopener">${it.text}</a>` : it.text}</span>
         </div>`).join('')}
       </div>
     </div>`;
   }).join('');
 }
 
-function toggleCard(k) {
-  openCards[k] = openCards[k] === false ? true : false;
-  document.getElementById('card-' + k).classList.toggle('collapsed', openCards[k] === false);
-  const chev = document.getElementById('chev-' + k);
-  chev.classList.toggle('open', openCards[k] !== false);
+function toggleInfo(k) {
+  openState[k] = openState[k] === false ? true : false;
+  document.getElementById('body-' + k).classList.toggle('collapsed', openState[k] === false);
+  document.getElementById('chev-' + k).classList.toggle('open', openState[k] !== false);
 }
 
-// Show a subtle banner when running in offline/fallback mode
-function showFallbackBanner() {
-  const banner = document.createElement('div');
-  banner.style.cssText = 'background:#fef3c7;border-bottom:1px solid #fcd34d;padding:6px 24px;font-size:12px;color:#92400e;text-align:center;';
-  banner.textContent = 'Showing cached content — could not reach the content server.';
-  document.querySelector('.app-header').insertAdjacentElement('afterend', banner);
+function openRotation(id) { go('rotations'); if (ROTATIONS[id]) selectRotation(id); }
+
+// ═══════════════ CALCULATORS ═══════════════
+const CALCS = [
+  { id: 'fwd',   group: 'Electrolytes', title: 'Free Water Deficit',            sub: 'Hypernatremia correction', icon: 'water_drop' },
+  { id: 'efwc',  group: 'Electrolytes', title: 'Electrolyte Free Water Clearance', sub: 'Na handling',           icon: 'water_drop' },
+  { id: 'ofwc',  group: 'Electrolytes', title: 'Osmolar Free Water Clearance',  sub: 'Urine concentration',      icon: 'water_drop' },
+  { id: 'winters', group: 'Acid-base',  title: "Winter's Formula",              sub: 'Expected PCO₂',            icon: 'science' },
+  { id: 'dd',    group: 'Acid-base',    title: 'Delta-Delta Gap',               sub: 'Mixed acid-base',          icon: 'calculate' },
+  { id: 'uog',   group: 'Acid-base',    title: 'Urine Osmolar Gap',             sub: 'NH4+ excretion / RTA',     icon: 'science' },
+  { id: 'crrt',  group: 'Dialysis',     title: 'CRRT Hyponatremia Correction',  sub: 'D5W admixture',            icon: 'medication' },
+  { id: 'kfre',  group: 'Dialysis',     title: 'Kidney Failure Risk (KFRE)',    sub: '2 & 5-yr ESKD risk',       icon: 'timeline' },
+  { id: 'prevent', group: 'General',    title: 'PREVENT CV Risk',               sub: '10 & 30-yr CVD',           icon: 'favorite' },
+];
+
+function renderCalcList() {
+  const groups = {};
+  CALCS.forEach(c => { (groups[c.group] = groups[c.group] || []).push(c); });
+  document.getElementById('calcList').innerHTML = Object.entries(groups).map(([g, list]) =>
+    `<div class="calc-group-label">${g}</div>
+     <div class="calc-list-card">
+       ${list.map(c => `<button class="calc-row" onclick="openCalc('${c.id}')">
+         <div class="calc-row-ico"><span class="ms">${c.icon}</span></div>
+         <div style="flex:1;"><div class="calc-row-title">${c.title}</div><div class="calc-row-sub">${c.sub}</div></div>
+         <span class="ms chev">chevron_right</span>
+       </button>`).join('')}
+     </div>`
+  ).join('');
 }
 
-// Load rotations from API, fall back to hardcoded ROTATIONS if unavailable
-async function loadRotations() {
-  try {
-    const res = await fetch(`${API_URL}/rotations`, { signal: AbortSignal.timeout(5000) });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    // Index by rotation id
-    data.forEach(rot => { ROTATION_DATA[rot.id] = normaliseRotation(rot); });
-    console.log(`Loaded ${data.length} rotations from API`);
-  } catch (err) {
-    console.warn('API unavailable, using hardcoded fallback:', err.message);
-    showFallbackBanner();
-    // Build ROTATION_DATA from the hardcoded ROTATIONS constant
-    Object.entries(ROTATIONS).forEach(([id, rot]) => {
-      ROTATION_DATA[id] = normaliseRotation({ id, ...rot });
-    });
+// Calculator field definitions
+const num = id => { const v = parseFloat(document.getElementById(id).value); return isFinite(v) ? v : NaN; };
+const val = id => document.getElementById(id).value;
+const chk = id => document.getElementById(id).checked;
+
+function inputRow(id, label, sub, unit, type = 'number', opts = null) {
+  if (type === 'select') {
+    return `<div class="input-row"><div><div class="input-label">${label}</div>${sub ? `<div class="input-sub">${sub}</div>` : ''}</div>
+      <div class="input-field"><select id="${id}" oninput="runCalc()">${opts.map(o => `<option value="${o[0]}">${o[1]}</option>`).join('')}</select></div></div>`;
   }
-
-  // Wire sidebar and render first rotation
-  document.getElementById('rotSidebar').addEventListener('click', e => {
-    const btn = e.target.closest('.rot-sidebar-btn'); if (!btn) return;
-    document.querySelectorAll('.rot-sidebar-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderRotation(btn.dataset.rot);
-  });
-  renderRotation('icu');
+  if (type === 'toggle') {
+    return `<div class="input-toggle"><div><div class="input-label">${label}</div>${sub ? `<div class="input-sub">${sub}</div>` : ''}</div>
+      <label class="switch"><input type="checkbox" id="${id}" oninput="runCalc()"><span class="track"></span></label></div>`;
+  }
+  return `<div class="input-row"><div><div class="input-label">${label}</div>${sub ? `<div class="input-sub">${sub}</div>` : ''}</div>
+    <div class="input-field"><input type="number" id="${id}" placeholder="—" oninput="runCalc()"><span class="unit">${unit || ''}</span></div></div>`;
 }
 
-loadRotations();
-
-document.querySelector('.calc-sidebar').addEventListener('click', e => {
-  const btn = e.target.closest('.calc-sidebar-btn'); if (!btn) return;
-  document.querySelectorAll('.calc-sidebar-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.calc-pane').forEach(p => p.classList.remove('active'));
-  document.getElementById('calc-' + btn.dataset.calc).classList.add('active');
-});
-
-function switchSection(id, btn) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.top-nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('sec-' + id).classList.add('active');
-  btn.classList.add('active');
-}
-
-// ── Calculator helpers ──
-const g = id => parseFloat(document.getElementById(id).value);
-const gv = id => document.getElementById(id).value;
-const gc = id => document.getElementById(id).checked;
-const out = (id, html) => document.getElementById(id).innerHTML = html;
-const rbox = (cls, rows, note) =>
-  `<div class="result-box ${cls}">${rows.map(r => `<div class="result-row">${r}</div>`).join('')}${note ? `<div class="result-note">${note}</div>` : ''}</div>`;
-
-function calcFWD() {
-  const wt = g('fwd-wt'), na = g('fwd-na'), sex = gv('fwd-sex'), el = gc('fwd-elderly');
-  if (!wt || !na) { out('fwd-result', ''); return; }
-  const f = el ? (sex === 'male' ? 0.5 : 0.45) : (sex === 'male' ? 0.6 : 0.5);
-  const tbw = (f * wt).toFixed(1), def = (f * wt * (na - 140) / 140).toFixed(1);
-  out('fwd-result', rbox('result-blue', [`<strong>TBW:</strong> ${tbw} L`, `<strong>Free water deficit:</strong> ${def} L`],
-    parseFloat(def) > 0 ? `Replace ${Math.abs(def)} L over 48–72h (max 0.5 mEq/L/hr correction)` : 'No free water deficit'));
-}
-function calcEFWC() {
-  const vol = g('efwc-vol'), una = g('efwc-una'), uk = g('efwc-uk'), sna = g('efwc-sna');
-  if (!vol || !una || !uk || !sna) { out('efwc-result', ''); return; }
-  const efwc = (vol * (1 - (una + uk) / sna)).toFixed(1);
-  out('efwc-result', rbox('result-blue', [`<strong>EFWC:</strong> ${efwc} L/day`],
-    parseFloat(efwc) > 0 ? 'Positive: excreting free water (dilute urine relative to electrolytes)' : 'Negative: retaining free water — consider SIADH or impaired water excretion'));
-}
-function calcOFWC() {
-  const vol = g('ofwc-vol'), uosm = g('ofwc-uosm'), sosm = g('ofwc-sosm');
-  if (!vol || !uosm || !sosm) { out('ofwc-result', ''); return; }
-  const ofwc = (vol * (1 - uosm / sosm)).toFixed(1);
-  out('ofwc-result', rbox('result-blue', [`<strong>OFWC:</strong> ${ofwc} L/day`],
-    parseFloat(ofwc) > 0 ? 'Positive: dilute urine, free water being excreted' : 'Negative: concentrated urine, free water being retained'));
-}
-function calcWinters() {
-  const hco3 = g('win-hco3'); if (!hco3) { out('win-result', ''); return; }
-  const exp = (1.5 * hco3 + 8).toFixed(1);
-  out('win-result', rbox('result-green', [`<strong>Expected PCO₂:</strong> ${exp} mmHg`, `<strong>Acceptable range:</strong> ${(parseFloat(exp) - 2).toFixed(1)}–${(parseFloat(exp) + 2).toFixed(1)} mmHg`],
-    'Higher actual PCO₂ → concurrent respiratory acidosis. Lower → respiratory alkalosis.'));
-}
-function calcDD() {
-  const ag = g('dd-ag'), hco3 = g('dd-hco3'); if (!ag || !hco3) { out('dd-result', ''); return; }
-  const dAG = (ag - 12).toFixed(1), dHCO3 = (24 - hco3).toFixed(1), ratio = (parseFloat(dAG) / parseFloat(dHCO3)).toFixed(2);
-  const rv = parseFloat(ratio);
-  const interp = rv < 0.4 ? 'Ratio <0.4 — non-gap acidosis or mixed' : rv <= 0.8 ? 'Ratio 0.4–0.8 — mixed high-gap and non-gap' : rv < 2 ? 'Ratio 0.8–2 — pure anion gap acidosis' : 'Ratio >2 — AG acidosis + concurrent metabolic alkalosis';
-  out('dd-result', rbox('result-green', [`<strong>ΔAG:</strong> ${dAG} &nbsp; <strong>ΔHCO₃:</strong> ${dHCO3} &nbsp; <strong>Ratio:</strong> ${ratio}`], interp));
-}
-function calcUOG() {
-  const uosm = g('uog-uosm'), una = g('uog-una'), uk = g('uog-uk'), bun = g('uog-bun') || 0;
-  if (!uosm || !una || !uk) { out('uog-result', ''); return; }
-  const calc = (2 * (una + uk) + bun / 2.8).toFixed(0), gap = (uosm - calc).toFixed(0);
-  out('uog-result', rbox('result-green', [`<strong>Calculated Osm:</strong> ${calc} mOsm/kg`, `<strong>Osmolar gap:</strong> ${gap} mOsm/kg`],
-    parseFloat(gap) > 100 ? 'Gap >100: unmeasured osmoles (NH4+), intact distal acidification — seen in GI losses' : 'Gap <100: impaired NH4+ excretion — consider RTA'));
-}
-function calcCRRT() {
-  const pna = g('crrt-pna'), tna = g('crrt-tna'), rf = g('crrt-rf'), sna = g('crrt-sna');
-  if (!pna || !tna || !rf || !sna) { out('crrt-result', ''); return; }
-  const d5w = (rf * (sna - tna) / tna).toFixed(0), total = (rf + parseFloat(d5w)).toFixed(0), effNa = (sna * rf / parseFloat(total)).toFixed(1);
-  out('crrt-result', rbox('result-purple', [`<strong>D5W rate:</strong> ${d5w} mL/hr`, `<strong>Total effluent:</strong> ${total} mL/hr`, `<strong>Effective Na:</strong> ${effNa} mEq/L`],
-    'Target 4–6 mEq/L correction in 24h. Check Na q2–4h.'));
-}
-function calcKFRE() {
-  const age = g('kfre-age'), sex = gv('kfre-sex'), egfr = g('kfre-egfr'), acr = g('kfre-acr'), region = gv('kfre-region');
-  if (!age || !egfr || !acr) { out('kfre-result', ''); return; }
-  const xb = -0.199 * Math.log(age / 10) + 0.166 * (sex === 'male' ? 1 : 0) - 0.451 * Math.log(egfr / 5) + 0.451 * Math.log(acr);
-  const s2 = region === 'northamerica' ? 0.9832 : 0.9780, s5 = region === 'northamerica' ? 0.9365 : 0.9240;
-  const r2 = ((1 - Math.pow(s2, Math.exp(xb))) * 100).toFixed(1), r5 = ((1 - Math.pow(s5, Math.exp(xb))) * 100).toFixed(1);
-  out('kfre-result', rbox('result-purple', [`<strong>2-yr ESKD risk:</strong> ${r2}%`, `<strong>5-yr ESKD risk:</strong> ${r5}%`],
-    parseFloat(r2) > 10 ? 'High risk (>10% at 2yr): consider nephrology referral and AV fistula discussion' : 'Lower risk: continue monitoring and optimize CKD care'));
-}
-function calcPREVENT() {
-  const age = g('prev-age'), sex = gv('prev-sex'), sbp = g('prev-sbp'), tc = g('prev-tc'), hdl = g('prev-hdl'), egfr = g('prev-egfr'), acr = g('prev-acr');
-  if (!age || !sbp || !tc || !hdl || !egfr || !acr) { out('prev-result', ''); return; }
-  const xb = 0.51125 * Math.log(age) - 0.26606 * (sex === 'female' ? 1 : 0) + 0.53115 * Math.log(sbp) + 0.27925 * Math.log(tc) - 0.43980 * Math.log(hdl) - 0.26010 * Math.log(egfr) + 0.13546 * Math.log(Math.max(acr, 1)) + 0.11031 * (gc('prev-bpmeds') ? 1 : 0) - 0.11291 * (gc('prev-statin') ? 1 : 0) + 0.38824 * (gc('prev-dm') ? 1 : 0) + 0.43384 * (gc('prev-smoke') ? 1 : 0);
-  const r10 = ((1 - Math.pow(0.9533, Math.exp(xb))) * 100).toFixed(1), r30 = ((1 - Math.pow(0.8016, Math.exp(xb))) * 100).toFixed(1);
-  const rv = parseFloat(r10), cat = rv < 5 ? 'Low risk' : rv < 7.5 ? 'Borderline risk' : rv < 20 ? 'Intermediate risk' : 'High risk';
-  out('prev-result', rbox('result-red', [`<strong>10-yr CVD risk:</strong> ${r10}%`, `<strong>30-yr CVD risk:</strong> ${r30}%`, `<strong>Category:</strong> ${cat}`],
-    'PREVENT integrates eGFR and urine ACR into cardiovascular risk estimation'));
-}
-
-document.querySelectorAll('#calc-electrolytes input, #calc-electrolytes select').forEach(el => el.addEventListener('input', () => { calcFWD(); calcEFWC(); calcOFWC(); }));
-document.querySelectorAll('#calc-acidbase input').forEach(el => el.addEventListener('input', () => { calcWinters(); calcDD(); calcUOG(); }));
-document.querySelectorAll('#calc-dialysis input, #calc-dialysis select').forEach(el => el.addEventListener('input', () => { calcCRRT(); calcKFRE(); }));
-document.querySelectorAll('#calc-general input, #calc-general select').forEach(el => el.addEventListener('input', calcPREVENT));
-
-// ── Duty hours (localStorage for standalone file) ──
-let isClockedIn = false, clockInTime = null, shiftLog = [];
-
-function loadDutyData() {
-  try {
-    const raw = localStorage.getItem('unc-duty-log');
-    if (raw) {
-      const d = JSON.parse(raw);
-      shiftLog = d.shiftLog || [];
-      if (d.clockInTime) {
-        isClockedIn = true; clockInTime = new Date(d.clockInTime);
-        document.getElementById('clockBtn').textContent = 'Clock out';
-        document.getElementById('clockBtn').className = 'btn-clock btn-out';
-        document.getElementById('clockStatus').textContent = 'Currently clocked in';
-        document.getElementById('clockSub').textContent = 'Started: ' + clockInTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      }
+const CALC_DEFS = {
+  fwd: {
+    inputs: () => inputRow('i-wt','Weight','','kg') + inputRow('i-na','Serum Na','','mEq/L') +
+      inputRow('i-sex','Sex','','','select',[['male','Male'],['female','Female']]) +
+      inputRow('i-eld','Elderly','Age 65+ · reduced TBW','','toggle'),
+    formula: 'Deficit = TBW × (Na/140 − 1). TBW = weight × 0.6 (M) / 0.5 (F), reduced if elderly.',
+    run: () => {
+      const wt = num('i-wt'), na = num('i-na'), sex = val('i-sex'), eld = chk('i-eld');
+      if (isNaN(wt) || isNaN(na)) return null;
+      const f = eld ? (sex === 'male' ? 0.5 : 0.45) : (sex === 'male' ? 0.6 : 0.5);
+      const tbw = f * wt, def = tbw * ((na - 140) / 140);
+      return { big: def.toFixed(1), unit: 'L', badge: def > 0 ? ['Deficit', 'crit'] : ['None', 'ok'],
+        tiles: [['TBW', tbw.toFixed(1) + ' L'], ['Target', na > 140 ? '−10 mEq/day' : '—']],
+        note: def > 0 ? `Replace ${Math.abs(def).toFixed(1)} L over 48–72h. Max 0.5 mEq/L/hr, ≤8–10 mEq/L/day.` : 'No free water deficit (Na ≤ 140).' };
     }
-  } catch(e) {}
-  renderLog(); updateStats();
+  },
+  efwc: {
+    inputs: () => inputRow('i-uv','Urine volume','','L/day') + inputRow('i-una','Urine Na','','mEq/L') +
+      inputRow('i-uk','Urine K','','mEq/L') + inputRow('i-sna','Serum Na','','mEq/L'),
+    formula: 'EFWC = V × (1 − (UNa + UK)/SNa).',
+    run: () => {
+      const v = num('i-uv'), una = num('i-una'), uk = num('i-uk'), sna = num('i-sna');
+      if ([v,una,uk,sna].some(isNaN)) return null;
+      const e = v * (1 - (una + uk) / sna);
+      return { big: e.toFixed(2), unit: 'L/day', badge: e > 0 ? ['Excreting','ok'] : ['Retaining','crit'],
+        tiles: [['(UNa+UK)/SNa', ((una+uk)/sna).toFixed(2)]],
+        note: e > 0 ? 'Positive: excreting free water (dilute relative to electrolytes).' : 'Negative: retaining free water — consider SIADH / impaired excretion.' };
+    }
+  },
+  ofwc: {
+    inputs: () => inputRow('i-uv2','Urine volume','','L/day') + inputRow('i-uosm','Urine Osm','','mOsm/kg') + inputRow('i-sosm','Serum Osm','','mOsm/kg'),
+    formula: 'OFWC = V × (1 − UOsm/SOsm).',
+    run: () => {
+      const v = num('i-uv2'), uo = num('i-uosm'), so = num('i-sosm');
+      if ([v,uo,so].some(isNaN)) return null;
+      const o = v * (1 - uo / so);
+      return { big: o.toFixed(2), unit: 'L/day', badge: o > 0 ? ['Dilute','ok'] : ['Concentrated','info'],
+        tiles: [['UOsm/SOsm', (uo/so).toFixed(2)]],
+        note: o > 0 ? 'Positive: dilute urine, free water excreted.' : 'Negative: concentrated urine, free water retained.' };
+    }
+  },
+  winters: {
+    inputs: () => inputRow('i-hco3','Serum HCO₃','','mEq/L'),
+    formula: 'Expected PCO₂ = 1.5 × HCO₃ + 8 (± 2).',
+    run: () => {
+      const h = num('i-hco3'); if (isNaN(h)) return null;
+      const e = 1.5 * h + 8;
+      return { big: e.toFixed(0), unit: 'mmHg', badge: ['Expected','info'],
+        tiles: [['Low', (e-2).toFixed(0)], ['High', (e+2).toFixed(0)]],
+        note: 'Actual PCO₂ above range → concurrent respiratory acidosis. Below → respiratory alkalosis.' };
+    }
+  },
+  dd: {
+    inputs: () => inputRow('i-ag','Anion gap','','') + inputRow('i-hco3b','Serum HCO₃','','mEq/L'),
+    formula: 'Δ/Δ = (AG − 12) / (24 − HCO₃).',
+    run: () => {
+      const ag = num('i-ag'), h = num('i-hco3b'); if (isNaN(ag) || isNaN(h)) return null;
+      const dag = ag - 12, dh = 24 - h, r = dag / dh;
+      let lbl, bd;
+      if (r < 0.4) { lbl = 'Non-gap / mixed'; bd = 'info'; }
+      else if (r <= 0.8) { lbl = 'Mixed gap + non-gap'; bd = 'info'; }
+      else if (r < 2) { lbl = 'Pure AG acidosis'; bd = 'ok'; }
+      else { lbl = 'AG acidosis + alkalosis'; bd = 'caution'; }
+      return { big: isFinite(r) ? r.toFixed(2) : '—', unit: 'ratio', badge: [lbl, bd],
+        tiles: [['ΔAG', dag.toFixed(1)], ['ΔHCO₃', dh.toFixed(1)]], note: lbl + '.' };
+    }
+  },
+  uog: {
+    inputs: () => inputRow('i-uosm2','Urine Osm','','mOsm/kg') + inputRow('i-una2','Urine Na','','mEq/L') +
+      inputRow('i-uk2','Urine K','','mEq/L') + inputRow('i-ubun','Urine BUN','optional','mg/dL'),
+    formula: 'Gap = measured − [2×(UNa+UK) + UBUN/2.8].',
+    run: () => {
+      const uo = num('i-uosm2'), una = num('i-una2'), uk = num('i-uk2'); let bun = num('i-ubun'); if (isNaN(bun)) bun = 0;
+      if ([uo,una,uk].some(isNaN)) return null;
+      const calc = 2 * (una + uk) + bun / 2.8, gap = uo - calc;
+      return { big: gap.toFixed(0), unit: 'mOsm/kg', badge: gap > 100 ? ['Intact NH4+','ok'] : ['Low NH4+','caution'],
+        tiles: [['Calculated', calc.toFixed(0)]],
+        note: gap > 100 ? 'Gap >100: intact distal acidification / NH4+ (e.g. GI losses).' : 'Gap <100: impaired NH4+ excretion — consider RTA.' };
+    }
+  },
+  crrt: {
+    inputs: () => inputRow('i-pna','Patient Na','','mEq/L') + inputRow('i-tna','Target Na','','mEq/L') +
+      inputRow('i-rf','Replacement rate','','mL/hr') + inputRow('i-solna','Solution Na','','mEq/L'),
+    formula: 'D5W rate = RF × (SolNa − Target) / Target.',
+    run: () => {
+      const p = num('i-pna'), t = num('i-tna'), rf = num('i-rf'), s = num('i-solna');
+      if ([p,t,rf,s].some(isNaN)) return null;
+      const d5w = rf * (s - t) / t, total = rf + d5w, eff = s * rf / total;
+      return { big: d5w.toFixed(0), unit: 'mL/hr D5W', badge: ['Admixture','info'],
+        tiles: [['Total effluent', total.toFixed(0) + ' mL/hr'], ['Effective Na', eff.toFixed(1) + ' mEq/L']],
+        note: 'Target 4–6 mEq/L correction / 24h. Recheck Na q2–4h.' };
+    }
+  },
+  kfre: {
+    inputs: () => inputRow('i-age','Age','','yr') + inputRow('i-ksex','Sex','','','select',[['female','Female'],['male','Male']]) +
+      inputRow('i-egfr','eGFR','','mL/min') + inputRow('i-acr','Urine ACR','','mg/g') +
+      inputRow('i-region','Region','','','select',[['na','North America'],['other','Other']]),
+    formula: '4-variable KFRE (Tangri 2011).',
+    run: () => {
+      const age = num('i-age'), sex = val('i-ksex'), egfr = num('i-egfr'), acr = num('i-acr'), reg = val('i-region');
+      if ([age,egfr,acr].some(isNaN)) return null;
+      const xb = -0.199*Math.log(age/10) + 0.166*(sex==='male'?1:0) - 0.451*Math.log(egfr/5) + 0.451*Math.log(acr);
+      const s2 = reg==='na'?0.9832:0.9780, s5 = reg==='na'?0.9365:0.9240;
+      const r2 = (1-Math.pow(s2,Math.exp(xb)))*100, r5 = (1-Math.pow(s5,Math.exp(xb)))*100;
+      return { big: r2.toFixed(1), unit: '% (2-yr)', badge: r2>10?['High','crit']:['Lower','ok'],
+        tiles: [['5-yr risk', r5.toFixed(1) + '%']],
+        note: r2>10 ? 'High risk (>10% at 2yr): consider referral + AV fistula discussion.' : 'Lower risk: continue monitoring, optimize CKD care.' };
+    }
+  },
+  prevent: {
+    inputs: () => inputRow('i-page','Age','','yr') + inputRow('i-psex','Sex','','','select',[['male','Male'],['female','Female']]) +
+      inputRow('i-sbp','Systolic BP','','mmHg') + inputRow('i-tc','Total chol','','mg/dL') + inputRow('i-hdl','HDL','','mg/dL') +
+      inputRow('i-pegfr','eGFR','','mL/min') + inputRow('i-pacr','Urine ACR','','mg/g') +
+      inputRow('i-bpmed','BP medication','','','toggle') + inputRow('i-statin','Statin','','','toggle') +
+      inputRow('i-dm','Diabetes','','','toggle') + inputRow('i-smoke','Current smoker','','','toggle'),
+    formula: 'AHA PREVENT (Khan 2024). Includes eGFR + ACR.',
+    run: () => {
+      const age=num('i-page'),sbp=num('i-sbp'),tc=num('i-tc'),hdl=num('i-hdl'),egfr=num('i-pegfr'),acr=num('i-pacr'),sex=val('i-psex');
+      if ([age,sbp,tc,hdl,egfr,acr].some(isNaN)) return null;
+      const xb = 0.51125*Math.log(age) - 0.26606*(sex==='female'?1:0) + 0.53115*Math.log(sbp) + 0.27925*Math.log(tc)
+        - 0.43980*Math.log(hdl) - 0.26010*Math.log(egfr) + 0.13546*Math.log(Math.max(acr,1))
+        + 0.11031*(chk('i-bpmed')?1:0) - 0.11291*(chk('i-statin')?1:0) + 0.38824*(chk('i-dm')?1:0) + 0.43384*(chk('i-smoke')?1:0);
+      const r10 = (1-Math.pow(0.9533,Math.exp(xb)))*100, r30 = (1-Math.pow(0.8016,Math.exp(xb)))*100;
+      const cat = r10<5?['Low','ok']:r10<7.5?['Borderline','info']:r10<20?['Intermediate','caution']:['High','crit'];
+      return { big: r10.toFixed(1), unit: '% (10-yr)', badge: cat, tiles: [['30-yr risk', r30.toFixed(1) + '%']],
+        note: 'PREVENT integrates eGFR and urine ACR into CVD risk.' };
+    }
+  },
+};
+
+const BADGE_STYLE = {
+  ok:      ['var(--normal-bg)','var(--normal)'],
+  info:    ['var(--sky)','var(--carolina-deep)'],
+  caution: ['var(--caution-bg)','var(--caution)'],
+  crit:    ['var(--critical-bg)','var(--critical)'],
+};
+
+let currentCalc = null;
+function openCalc(id) {
+  currentCalc = id;
+  const c = CALCS.find(x => x.id === id), def = CALC_DEFS[id];
+  document.getElementById('calcTitle').textContent = c.title;
+  document.getElementById('calcDetail').innerHTML =
+    `<div class="calc-group-label" style="margin-top:2px;">Inputs</div>
+     <div class="input-card">${def.inputs()}</div>
+     <div id="calcResult"></div>
+     <div class="formula-note">${def.formula}</div>`;
+  go('calc-detail');
+  runCalc();
 }
 
-function saveDutyData() {
-  try { localStorage.setItem('unc-duty-log', JSON.stringify({ shiftLog, clockInTime: isClockedIn && clockInTime ? clockInTime.toISOString() : null })); } catch(e) {}
+function runCalc() {
+  if (!currentCalc) return;
+  const r = CALC_DEFS[currentCalc].run();
+  const el = document.getElementById('calcResult');
+  if (!r) { el.innerHTML = ''; return; }
+  const [bg, col] = BADGE_STYLE[r.badge[1]] || BADGE_STYLE.info;
+  el.innerHTML =
+    `<div class="calc-group-label">Result</div>
+     <div class="result-card">
+       <div class="result-hero">
+         <div class="result-big">${r.big}<span class="u"> ${r.unit}</span></div>
+         <div class="result-badge" style="background:${bg};color:${col};">${r.badge[0]}</div>
+       </div>
+       ${r.tiles && r.tiles.length ? `<div class="result-grid">${r.tiles.map(t => `<div class="result-tile"><div class="result-tile-label">${t[0]}</div><div class="result-tile-val">${t[1]}</div></div>`).join('')}</div>` : ''}
+       <div class="result-note"><span class="ms">insights</span><span>${r.note}</span></div>
+     </div>`;
 }
 
-function toggleClock() {
-  const now = new Date();
-  if (!isClockedIn) {
-    isClockedIn = true; clockInTime = now;
-    document.getElementById('clockBtn').textContent = 'Clock out';
-    document.getElementById('clockBtn').className = 'btn-clock btn-out';
-    document.getElementById('clockStatus').textContent = 'Currently clocked in';
-    document.getElementById('clockSub').textContent = 'Started: ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+// ═══════════════ DUTY HOURS ═══════════════
+let shifts = [];
+let activeStart = null;
+let elapsedTimer = null;
+let editingId = null;
+
+function loadDuty() {
+  try {
+    const raw = localStorage.getItem('unc-duty-v2');
+    if (raw) { const d = JSON.parse(raw); shifts = d.shifts || []; activeStart = d.activeStart ? new Date(d.activeStart) : null; }
+  } catch (e) {}
+  renderDuty();
+}
+function saveDuty() {
+  try { localStorage.setItem('unc-duty-v2', JSON.stringify({ shifts, activeStart: activeStart ? activeStart.toISOString() : null })); } catch (e) {}
+}
+
+const two = n => String(n).padStart(2, '0');
+function fmtDur(mins) { return `${Math.floor(mins/60)}h ${two(mins%60)}m`; }
+function fmtClock(ms) { const s = Math.floor(ms/1000); return `${two(Math.floor(s/3600))}:${two(Math.floor(s%3600/60))}:${two(s%60)}`; }
+function fmtTime(d) { return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); }
+function fmtDay(d) { return d.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }); }
+
+function weekStart(d = new Date()) { const x = new Date(d); x.setHours(0,0,0,0); x.setDate(x.getDate() - x.getDay()); return x; }
+
+function renderDuty() {
+  const hero = document.getElementById('dutyHero');
+  if (activeStart) {
+    hero.innerHTML =
+      `<div class="duty-hero-active">
+        <div class="top"><div class="on"><span class="dot"></span>On shift</div><div class="duty-since">Since ${fmtTime(activeStart)}</div></div>
+        <div class="duty-elapsed" id="elapsed">00:00:00</div>
+        <div class="duty-elapsed-label">Elapsed this shift</div>
+        <button class="btn-out" onclick="clockOut()"><span class="ms">logout</span><span>Clock Out</span></button>
+      </div>`;
+    startTimer();
   } else {
-    const mins = Math.round((now - clockInTime) / 60000);
-    shiftLog.unshift({ date: clockInTime.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }), inTime: clockInTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), outTime: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), mins, iso: clockInTime.toISOString() });
-    isClockedIn = false; clockInTime = null;
-    document.getElementById('clockBtn').textContent = 'Clock in';
-    document.getElementById('clockBtn').className = 'btn-clock btn-in';
-    document.getElementById('clockStatus').textContent = 'Not clocked in';
-    document.getElementById('clockSub').textContent = '\u00a0';
-    renderLog(); updateStats();
+    const last = shifts[0];
+    hero.innerHTML =
+      `<div class="duty-hero-idle">
+        <div class="top"><div class="off"><span class="dot"></span>Not on shift</div><div class="duty-last">${last ? 'Last: ' + fmtDur(last.mins) : 'No shifts yet'}</div></div>
+        <button class="clockin-btn" onclick="clockIn()"><span class="ms">login</span><span>Clock In</span></button>
+        <div class="clockin-hint">Tap when you arrive</div>
+      </div>`;
+    stopTimer();
   }
-  saveDutyData();
+  renderWeek();
+  renderShiftLog();
+  saveDuty();
 }
 
-function fmtDur(m) { return `${Math.floor(m / 60)}h ${m % 60}m`; }
+function startTimer() {
+  stopTimer();
+  const tick = () => { const el = document.getElementById('elapsed'); if (el && activeStart) el.textContent = fmtClock(Date.now() - activeStart.getTime()); };
+  tick(); elapsedTimer = setInterval(tick, 1000);
+}
+function stopTimer() { if (elapsedTimer) { clearInterval(elapsedTimer); elapsedTimer = null; } }
 
-function renderLog() {
-  const el = document.getElementById('logEntries');
-  el.innerHTML = shiftLog.length ? shiftLog.map(s => `<div class="log-entry"><div><div class="log-date">${s.date}</div><div class="log-detail">${s.inTime} → ${s.outTime}</div></div><div class="log-hours">${fmtDur(s.mins)}</div></div>`).join('') : '<div class="empty-log">No shifts logged yet</div>';
+function clockIn() { activeStart = new Date(); renderDuty(); }
+function clockOut() {
+  if (!activeStart) return;
+  const end = new Date(), mins = Math.max(1, Math.round((end - activeStart) / 60000));
+  shifts.unshift({ id: Date.now(), start: activeStart.toISOString(), end: end.toISOString(), mins });
+  activeStart = null; renderDuty();
+  showToast('Shift saved · ' + fmtDur(mins));
 }
 
-function updateStats() {
-  const today = new Date().toDateString(), weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
-  let tm = 0, wm = 0;
-  shiftLog.forEach(s => { const d = new Date(s.iso); if (d.toDateString() === today) tm += s.mins; if (d.getTime() >= weekAgo) wm += s.mins; });
-  document.getElementById('statToday').textContent = fmtDur(tm);
-  document.getElementById('statWeek').textContent = fmtDur(wm);
+function renderWeek() {
+  const ws = weekStart(), we = new Date(ws); we.setDate(we.getDate() + 6);
+  document.getElementById('weekRange').textContent = `${ws.toLocaleDateString([], {month:'short',day:'numeric'})} – ${we.toLocaleDateString([], {month:'short',day:'numeric'})}`;
+  const wk = shifts.filter(s => new Date(s.start) >= ws);
+  const total = wk.reduce((a, s) => a + s.mins, 0);
+  document.getElementById('weekTotal').textContent = fmtDur(total);
+  document.getElementById('weekShifts').textContent = wk.length ? `${wk.length} shift${wk.length !== 1 ? 's' : ''}` : 'No shifts yet';
 }
 
-function clearLog() {
-  if (!confirm('Clear all logged shifts?')) return;
-  shiftLog = []; renderLog(); updateStats(); saveDutyData();
+function renderShiftLog() {
+  const el = document.getElementById('shiftLog');
+  if (!shifts.length) { el.innerHTML = '<div class="empty-shifts">No shifts logged yet</div>'; return; }
+  el.innerHTML = shifts.map(s => {
+    const st = new Date(s.start), en = new Date(s.end);
+    return `<button class="shift-row" onclick="editShift(${s.id})">
+      <div class="shift-ico"><span class="ms">schedule</span></div>
+      <div style="flex:1;"><div class="shift-day">${fmtDay(st)}</div><div class="shift-time">${fmtTime(st)} → ${fmtTime(en)}</div></div>
+      <div class="shift-dur">${fmtDur(s.mins)}</div>
+    </button>`;
+  }).join('');
 }
 
-function updateLiveClock() {
-  document.getElementById('liveClock').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+function toTimeInput(d) { return `${two(d.getHours())}:${two(d.getMinutes())}`; }
+function editShift(id) {
+  const s = shifts.find(x => x.id === id); if (!s) return;
+  editingId = id;
+  const st = new Date(s.start), en = new Date(s.end);
+  document.getElementById('editSheetDate').textContent = fmtDay(st);
+  document.getElementById('editIn').value = toTimeInput(st);
+  document.getElementById('editOut').value = toTimeInput(en);
+  document.getElementById('editSheet').classList.add('open');
 }
-setInterval(updateLiveClock, 1000);
-updateLiveClock();
-loadDutyData();
+function closeSheet() { document.getElementById('editSheet').classList.remove('open'); editingId = null; }
+function saveShift() {
+  const s = shifts.find(x => x.id === editingId); if (!s) return closeSheet();
+  const [ih, im] = document.getElementById('editIn').value.split(':').map(Number);
+  const [oh, om] = document.getElementById('editOut').value.split(':').map(Number);
+  const st = new Date(s.start), en = new Date(s.end);
+  st.setHours(ih, im, 0, 0); en.setHours(oh, om, 0, 0);
+  if (en <= st) en.setDate(en.getDate() + 1); // crossed midnight
+  s.start = st.toISOString(); s.end = en.toISOString(); s.mins = Math.max(1, Math.round((en - st) / 60000));
+  closeSheet(); renderDuty(); showToast('Shift updated');
+}
+function deleteShift() {
+  shifts = shifts.filter(x => x.id !== editingId);
+  closeSheet(); renderDuty(); showToast('Shift deleted');
+}
+function clearShifts() {
+  if (!shifts.length) return;
+  if (!confirm('Clear all logged shifts? This cannot be undone.')) return;
+  shifts = []; renderDuty(); showToast('Log cleared');
+}
+
+function copyWeek() {
+  const ws = weekStart();
+  const wk = shifts.filter(s => new Date(s.start) >= ws).slice().reverse();
+  if (!wk.length) { showToast('No shifts this week'); return; }
+  const total = wk.reduce((a, s) => a + s.mins, 0);
+  let txt = `UNC Nephrology — Duty Hours\nWeek of ${ws.toLocaleDateString()}\n\n`;
+  wk.forEach(s => { const st = new Date(s.start), en = new Date(s.end); txt += `${fmtDay(st)}: ${fmtTime(st)} – ${fmtTime(en)} (${fmtDur(s.mins)})\n`; });
+  txt += `\nTotal: ${fmtDur(total)} across ${wk.length} shift${wk.length !== 1 ? 's' : ''}`;
+  const done = () => { const l = document.getElementById('copyLabel'); l.textContent = 'Copied ✓'; setTimeout(() => l.textContent = 'Copy weekly summary', 1800); };
+  if (navigator.clipboard) navigator.clipboard.writeText(txt).then(done).catch(() => fallbackCopy(txt, done));
+  else fallbackCopy(txt, done);
+}
+function fallbackCopy(txt, cb) {
+  const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); } catch (e) {}
+  document.body.removeChild(ta); cb && cb();
+}
+
+let toastTimer = null;
+function showToast(msg) {
+  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ═══════════════ INIT ═══════════════
+// Reveal icons only once the Material Symbols font is ready (prevents raw
+// icon-name text from flashing on slow networks); force-reveal after 2s so
+// icons are never permanently hidden even if the font never loads.
+(function revealIcons() {
+  const show = () => document.body.classList.add('ms-ready');
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.load('24px "Material Symbols Rounded"').then(show).catch(show);
+    document.fonts.ready.then(show);
+  }
+  setTimeout(show, 2000);
+})();
+
+renderCalcList();
+loadRotations();
+loadDuty();
+document.getElementById('editSheet').addEventListener('click', e => { if (e.target.id === 'editSheet') closeSheet(); });
 </script>
 </body>
 </html>
