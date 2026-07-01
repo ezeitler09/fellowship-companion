@@ -284,8 +284,8 @@
       </div>
       <div class="hdr-greet">
         <div class="hdr-greet-sm" id="homeGreetTime">Welcome,</div>
-        <div class="hdr-greet-lg" id="homeName">Nephrology Fellow</div>
-        <div class="hdr-chip"><span class="dot"></span><span id="homeStatus">On service</span></div>
+        <div class="hdr-greet-lg" id="homeName" onclick="openNameSheet()" style="cursor:pointer;">Nephrology Fellow</div>
+        <div class="hdr-chip" onclick="openNameSheet()" style="cursor:pointer;"><span class="dot"></span><span id="homeStatus">Tap to set your name</span></div>
       </div>
     </div>
     <div class="body scroll-y">
@@ -417,6 +417,20 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- Name / profile sheet -->
+<div class="sheet-backdrop" id="nameSheet">
+  <div class="sheet">
+    <div class="sheet-title">Your details</div>
+    <div class="sheet-sub">Shown in the header greeting. Stored only on this device.</div>
+    <div class="sheet-field"><label>Name</label><input type="text" id="nameInput" placeholder="e.g. Dr. Rivera" autocomplete="off" style="width:190px;"></div>
+    <div class="sheet-field"><label>Status</label><input type="text" id="statusInput" placeholder="e.g. On service · Consults" autocomplete="off" style="width:190px;"></div>
+    <div class="sheet-actions">
+      <button class="sheet-btn cancel" onclick="closeNameSheet()">Cancel</button>
+      <button class="sheet-btn save" onclick="saveName()">Save</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ═══════════════ CONFIG ═══════════════
 const API_URL = 'https://fellowship-companion-api-ezeitler.apps.cloudapps.unc.edu';
@@ -453,12 +467,42 @@ function go(screen) {
   document.querySelectorAll('.body').forEach(b => b.scrollTop = 0);
 }
 
-// ═══════════════ GREETING ═══════════════
-(function greeting() {
+// ═══════════════ GREETING + PROFILE ═══════════════
+function greetWord() {
   const h = new Date().getHours();
-  const g = h < 12 ? 'Good morning,' : h < 18 ? 'Good afternoon,' : 'Good evening,';
-  document.getElementById('homeGreetTime').textContent = g;
-})();
+  return h < 12 ? 'Good morning,' : h < 18 ? 'Good afternoon,' : 'Good evening,';
+}
+function initials(name) {
+  const parts = name.replace(/^(dr\.?|prof\.?)\s+/i, '').trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return 'NF';
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+function loadProfile() {
+  let p = {};
+  try { p = JSON.parse(localStorage.getItem('unc-profile') || '{}'); } catch (e) {}
+  document.getElementById('homeGreetTime').textContent = p.name ? greetWord() : 'Welcome,';
+  document.getElementById('homeName').textContent = p.name || 'Nephrology Fellow';
+  document.getElementById('homeStatus').textContent = p.status || (p.name ? 'On service' : 'Tap to set your name');
+  document.getElementById('homeInitials').textContent = p.name ? initials(p.name) : 'NF';
+}
+function openNameSheet() {
+  let p = {};
+  try { p = JSON.parse(localStorage.getItem('unc-profile') || '{}'); } catch (e) {}
+  document.getElementById('nameInput').value = p.name || '';
+  document.getElementById('statusInput').value = p.status || '';
+  document.getElementById('nameSheet').classList.add('open');
+  setTimeout(() => document.getElementById('nameInput').focus(), 100);
+}
+function closeNameSheet() { document.getElementById('nameSheet').classList.remove('open'); }
+function saveName() {
+  const name = document.getElementById('nameInput').value.trim();
+  const status = document.getElementById('statusInput').value.trim();
+  try { localStorage.setItem('unc-profile', JSON.stringify({ name, status })); } catch (e) {}
+  loadProfile();
+  closeNameSheet();
+  if (name) showToast('Welcome, ' + name.split(/\s+/).slice(-1)[0]);
+}
 
 // ═══════════════ ROTATIONS ═══════════════
 const FALLBACK_ROTATIONS = {
@@ -923,9 +967,11 @@ function showToast(msg) {
 })();
 
 renderCalcList();
+loadProfile();
 loadRotations();
 loadDuty();
 document.getElementById('editSheet').addEventListener('click', e => { if (e.target.id === 'editSheet') closeSheet(); });
+document.getElementById('nameSheet').addEventListener('click', e => { if (e.target.id === 'nameSheet') closeNameSheet(); });
 </script>
 </body>
 </html>
