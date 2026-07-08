@@ -17,8 +17,7 @@ rotation guides, nephrology calculators, and duty hour tracking.
 
 ```
 fellowship-companion/
-├── frontend/
-│   └── index.html          # Self-contained frontend app
+│   index.html              # Self-contained frontend app
 ├── backend/
 │   ├── main.py             # FastAPI application + REST endpoints
 │   ├── models.py           # SQLAlchemy database models
